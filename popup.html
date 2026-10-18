@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <title>TabTune Studio</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <link rel="stylesheet" href="popup.css" />
+</head>
+<body>
+
+  <main class="shell">
+
+    <!-- ===== Header ===== -->
+    <header class="glass header">
+      <div class="logo">
+        <div class="logo-orb"><span></span></div>
+        <div>
+          <div class="title-row">
+            <h1>TabTune <em>Studio</em></h1>
+            <span class="badge-v">v1.2</span>
+          </div>
+          <p id="tabName" class="tab-name">Ready to capture tab audio</p>
+        </div>
+      </div>
+      <div class="head-actions">
+        <button id="sideBtn" class="icon-btn" title="Open as Side Panel (survives popup close)">📌</button>
+        <button id="expandBtn" class="icon-btn" title="Open Full Screen Studio Tab">⤢</button>
+        <button id="shortcutsBtn" class="icon-btn" title="Keyboard Shortcuts">⌨</button>
+        <button id="settingsBtn" class="icon-btn" title="Settings & Key Pool">⚙</button>
+      </div>
+    </header>
+
+    <!-- ===== Recorder Card ===== -->
+    <section class="glass card recorder">
+      <div id="recoverBar" class="recover-bar" hidden>
+        <span>💾 <strong id="recoverText">Last take recovered from memory</strong></span>
+        <button id="recoverDismiss" class="mini-btn">Dismiss</button>
+      </div>
+
+      <div class="viz-wrap">
+        <div id="viz" class="viz">
+          <!-- 28 dynamic bars injected by JS -->
+        </div>
+        <div id="timer" class="timer">00:00</div>
+      </div>
+
+      <div class="rec-controls">
+        <button id="recBtn" class="rec-btn">
+          <span class="rec-dot"></span>
+          <span id="recLabel">Start Recording</span>
+        </button>
+        <button id="cancelBtn" class="ghost-btn" hidden>Discard</button>
+      </div>
+
+      <div class="options-row">
+        <label class="opt">
+          <span>Audio Format</span>
+          <select id="format">
+            <option value="webm" selected>WebM / Opus (320k)</option>
+            <option value="wav">WAV (PCM 16-bit Lossless)</option>
+          </select>
+        </label>
+        <label class="opt">
+          <span>Bitrate</span>
+          <select id="bitrate">
+            <option value="320000" selected>320 kbps (Studio)</option>
+            <option value="256000">256 kbps (High)</option>
+            <option value="192000">192 kbps (Standard)</option>
+          </select>
+        </label>
+      </div>
+
+      <div class="countdown-row" title="Countdown gives you time to switch to the music tab and press Play">
+        <label class="countdown-toggle">
+          <input type="checkbox" id="countdownToggle" checked />
+          <span>⏳ Countdown before recording</span>
+        </label>
+        <select id="countdownSecs" title="Countdown length (0 = start instantly)">
+          <option value="0">0s (instant)</option>
+          <option value="3">3s</option>
+          <option value="5" selected>5s</option>
+          <option value="10">10s</option>
+        </select>
+      </div>
+
+      <!-- ===== Take Memory (persists even if popup is closed) ===== -->
+      <div class="takes-wrap">
+        <div class="takes-head">
+          <strong>💾 Take Memory</strong>
+          <span id="takesCount" class="count">0 saved</span>
+        </div>
+        <div id="takesList" class="takes-list">
+          <p class="takes-empty">No takes yet — your finished recordings auto-save here.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Studio Audio Player (Revealed upon recording or loading) ===== -->
+    <section id="playerCard" class="glass card player-card" hidden>
+      <div class="player-header">
+        <div class="player-title-wrap">
+          <span class="live-dot"></span>
+          <strong id="playerTitle">Recorded Audio Preview</strong>
+        </div>
+        <span id="playerDuration" class="time-tag">00:00 / 00:00</span>
+      </div>
+
+      <div class="scrubber-wrap">
+        <input id="audioSeek" type="range" min="0" max="100" value="0" step="0.1" />
+      </div>
+
+      <div class="player-controls">
+        <button id="btnSkipBack" class="player-mini-btn" title="Rewind 3s (Ctrl + [)">↺ -3s</button>
+        <button id="btnPlayPause" class="player-play-btn" title="Play / Pause (Space)">▶ Play</button>
+        <button id="btnSkipFwd" class="player-mini-btn" title="Forward 3s (Ctrl + ])">+3s ↻</button>
+        
+        <div class="volume-box">
+          <span>🔊</span>
+          <input id="volumeSlider" type="range" min="0" max="1" step="0.05" value="1" title="Volume" />
+        </div>
+      </div>
+      <audio id="playerAudio" preload="auto"></audio>
+    </section>
+
+    <!-- ===== Lyrics Studio & Synced Editor ===== -->
+    <section class="glass card studio-card">
+      <div class="field-row">
+        <div class="field-col flex-2">
+          <label class="field-label" for="title">Track / Song Title</label>
+          <input id="title" type="text" placeholder="e.g. Diamond Platnumz - Komasava" maxlength="120" />
+        </div>
+        <div class="field-col flex-1">
+          <label class="field-label" for="transcribeLang">Language</label>
+          <select id="transcribeLang">
+            <option value="swahili" selected>Swahili (Kiswahili)</option>
+            <option value="english">English</option>
+            <option value="auto">Auto Detect</option>
+            <option value="french">French / Other</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Action buttons -->
+      <div class="studio-actions-bar">
+        <button id="btnTranscribe" class="action-btn primary-action" title="Transcribe recorded audio into synced .lrc lyrics with Gemini AI">
+          <span class="btn-icon">🤖</span>
+          <span>Transcribe Audio (Gemini)</span>
+        </button>
+        <button id="btnFetchLrclib" class="action-btn secondary-action" title="Fetch synced lyrics from LRCLIB database">
+          <span class="btn-icon">🔍</span>
+          <span>Fetch Online (LRCLIB)</span>
+        </button>
+      </div>
+
+      <div class="editor-header">
+        <div class="editor-tabs">
+          <button id="tabLrc" class="tab-btn active">Synced .LRC</button>
+          <button id="tabKaraoke" class="tab-btn">Karaoke Sync</button>
+          <button id="tabPlain" class="tab-btn">Plain Text</button>
+        </div>
+        <div class="editor-stats">
+          <button id="btnStampTime" class="stamp-btn" title="Stamp current audio time tag at cursor (Ctrl+T)">
+            ⏱ Stamp [Ctrl+T]
+          </button>
+          <span id="lyricsCount" class="count">0 lines</span>
+        </div>
+      </div>
+
+      <!-- Lyrics Editor Textarea -->
+      <div id="editorWrap" class="editor-wrap">
+        <textarea id="lyrics" rows="9" placeholder="Paste lyrics or click 'Transcribe Audio' to auto-generate timestamped lyrics.
+Example:
+[00:12.50] Hapa ndipo wimbo unapoanza...
+[00:16.80] Mistari inasawazishwa na sauti..."></textarea>
+      </div>
+
+      <!-- Live Karaoke Synced View -->
+      <div id="karaokeWrap" class="karaoke-wrap" hidden>
+        <div id="karaokeList" class="karaoke-list">
+          <p class="karaoke-hint">Play recorded audio above to see lyrics glow and scroll in real-time synchronization!</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== AI Songwriting & Polish Studio ===== -->
+    <section class="glass card ai-card">
+      <div class="ai-head">
+        <h2>✨ AI Songwriter & Polish <span class="ai-sub">Gemini Intelligence</span></h2>
+      </div>
+      <div class="ai-actions">
+        <button class="ai-btn" data-ai="polish">Polish Lyrics</button>
+        <button class="ai-btn" data-ai="continue">Continue Song</button>
+        <button class="ai-btn" data-ai="rhymes">Rhyme Matcher</button>
+        <button class="ai-btn" data-ai="titles">Title Ideas</button>
+        <button class="ai-btn" data-ai="mood">Mood & Chords</button>
+        <button class="ai-btn" data-ai="swahili_adapt">Swahili Rhyme Adapt</button>
+        <button class="ai-btn" data-ai="translate">Translate ⇄ English</button>
+      </div>
+      <div id="aiOut" class="ai-out" hidden>
+        <div class="ai-out-head">
+          <span id="aiOutLabel">Result</span>
+          <div class="ai-out-btns">
+            <button id="aiApply" class="mini-btn">Use as Lyrics</button>
+            <button id="aiCopy" class="mini-btn">Copy</button>
+            <button id="aiClose" class="mini-btn">✕</button>
+          </div>
+        </div>
+        <div id="aiText" class="ai-text"></div>
+      </div>
+    </section>
+
+    <!-- ===== Export Center ===== -->
+    <section class="glass card export-card">
+      <div class="export-head">
+        <h3>📦 Export & Save</h3>
+        <span class="export-hint">Save synced lyrics + tab audio</span>
+      </div>
+      <div class="export-buttons">
+        <button id="btnExportZip" class="export-btn primary-export" title="Export .ZIP bundle: Audio + .LRC + .TXT + Info (Ctrl+S)">
+          <span class="export-icon">📦</span>
+          <div class="export-label-wrap">
+            <strong>Export Studio ZIP</strong>
+            <small>Audio + .LRC + .TXT (All-in-one)</small>
+          </div>
+        </button>
+        <div class="sub-exports">
+          <button id="btnExportLrc" class="export-mini-btn" title="Download only synced .LRC file (Ctrl+E)">
+            📄 Download .LRC
+          </button>
+          <button id="btnExportAudio" class="export-mini-btn" title="Download only audio file">
+            🎵 Download Audio
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Toast Notifications ===== -->
+    <div id="toast" class="toast" hidden></div>
+
+    <!-- ===== 3-2-1 Countdown Overlay ===== -->
+    <div id="countdownOverlay" class="countdown-overlay" hidden>
+      <div class="countdown-num" id="countdownNum">5</div>
+      <div class="countdown-sub">Switch to the music tab & press Play 🎵</div>
+      <button id="countdownCancel" class="ghost-btn">Cancel</button>
+    </div>
+
+    <!-- ===== Keyboard Shortcuts Drawer Modal ===== -->
+    <div id="shortcutsModal" class="modal glass" hidden>
+      <div class="modal-head">
+        <h3>⌨ Keyboard Shortcuts</h3>
+        <button id="closeShortcutsBtn" class="close-btn">✕</button>
+      </div>
+      <div class="shortcuts-grid">
+        <div class="shortcut-row"><kbd>Alt + Shift + R</kbd><span>Start / Stop Tab Recording (Global)</span></div>
+        <div class="shortcut-row"><kbd>Space</kbd><span>Play / Pause Audio Preview</span></div>
+        <div class="shortcut-row"><kbd>Ctrl + T</kbd><span>Stamp Current Timestamp [mm:ss.xx]</span></div>
+        <div class="shortcut-row"><kbd>Ctrl + [</kbd><span>Jump Back 3 Seconds</span></div>
+        <div class="shortcut-row"><kbd>Ctrl + ]</kbd><span>Jump Forward 3 Seconds</span></div>
+        <div class="shortcut-row"><kbd>Ctrl + Shift + T</kbd><span>Auto-Transcribe with Gemini</span></div>
+        <div class="shortcut-row"><kbd>Ctrl + Shift + L</kbd><span>Search Synced Lyrics (LRCLIB)</span></div>
+        <div class="shortcut-row"><kbd>Ctrl + S</kbd><span>Export Studio ZIP</span></div>
+        <div class="shortcut-row"><kbd>Ctrl + E</kbd><span>Quick Export .LRC</span></div>
+      </div>
+    </div>
+
+    <!-- ===== Settings & API Pool Drawer ===== -->
+    <div id="settings" class="modal glass" hidden>
+      <div class="modal-head">
+        <h3>⚙ Gemini API Key Pool & Settings</h3>
+        <button id="closeSettingsBtn" class="close-btn">✕</button>
+      </div>
+      <div class="settings-body">
+        <div class="pool-summary">
+          <span class="pool-status-badge">🔄 Multi-Key Auto Fallback Enabled</span>
+          <span id="poolCountBadge" class="pool-count">13 Active Keys</span>
+        </div>
+        <p class="hint">TabTune Studio automatically rotates across your keys. If a key hits a rate limit or spike, it instantly retries with the next active key.<br />
+        🔒 <strong>Privacy:</strong> keys live ONLY in this browser (<code>chrome.storage.local</code>). They are never in the source code, so pushing to GitHub is safe.</p>
+
+        <label class="field-label" for="apiKeysArea">Gemini API Keys Pool (One key per line)</label>
+        <textarea id="apiKeysArea" rows="6" spellcheck="false" placeholder="Paste keys here, one per line (AQ.Ab... or AIza...)"></textarea>
+
+        <div class="pool-actions">
+          <button id="btnTestPool" class="ghost-btn mini">Test All Keys Now</button>
+          <span id="poolTestStatus" class="pool-status-text"></span>
+        </div>
+
+        <div class="pool-actions">
+          <span class="pool-status-text">📌 Side Panel:</span>
+          <span id="sidePanelStatus" class="pool-status-text">checking…</span>
+        </div>
+
+        <label class="field-label" for="model">Gemini Model</label>
+        <select id="model">
+          <option value="gemini-flash-latest" selected>gemini-flash-latest (Recommended - Native Audio & Ultra Fast)</option>
+          <option value="gemini-3.6-flash">gemini-3.6-flash (Next-Gen Flash)</option>
+          <option value="gemini-2.5-flash">gemini-2.5-flash (Standard)</option>
+        </select>
+
+        <button id="saveSettings" class="rec-btn small">Save Configuration</button>
+      </div>
+    </div>
+
+  </main>
+
+  <script src="lib/store.js"></script>
+  <!-- Optional local keys (gitignored). Missing file = normal, settings still work. -->
+  <script src="config.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

@@ -1,0 +1,14 @@
+# TabTune Studio — never commit secrets or local builds
+config.js
+*.log
+firebase-debug.log
+.DS_Store
+Thumbs.db
+*.zip
+*.wav
+*.webm
+*.lrc
+!lib/jszip.min.js
+.kilocode/
+node_modules/
+dist/
