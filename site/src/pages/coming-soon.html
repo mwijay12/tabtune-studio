@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js" data-mode="night" data-theme="night">
+<head>
+{{> head}}
+</head>
+<body>
+
+{{> icons}}
+{{> field}}
+{{> scroll-progress}}
+{{> header}}
+
+<main id="main" class="page">
+
+  <section class="pagemast" data-sec="night" aria-labelledby="soon-title">
+    <div class="shell soon__grid">
+      <div class="soon__col">
+        <p class="eyebrow">{{comingSoon.eyebrow}}</p>
+        <h1 id="soon-title" style="margin-top:1rem">{{comingSoon.headline}}</h1>
+        <p class="lede">{{comingSoon.sub}}</p>
+
+        <div class="count" data-countdown="{{launch.target}}" data-countdown-start="{{launch.start}}" style="margin-top:2.25rem">
+          <div class="count__ring" style="--p:0">
+            <svg viewBox="0 0 120 120" aria-hidden="true" focusable="false">
+              <path class="track" d="M8,60 A52,52 0 1 1 112,60 A52,52 0 1 1 8,60"/>
+              <path class="fill" data-ring pathLength="100" d="M8,60 A52,52 0 1 1 112,60 A52,52 0 1 1 8,60"/>
+            </svg>
+            <b><span data-ring-pct>0</span>%<small>there</small></b>
+          </div>
+          <div class="count__units" data-units>
+            <div class="count__unit"><b data-cd="days">—</b><span>days</span></div>
+            <div class="count__unit"><b data-cd="hours">—</b><span>hours</span></div>
+            <div class="count__unit"><b data-cd="minutes">—</b><span>minutes</span></div>
+            <div class="count__unit"><b data-cd="seconds">—</b><span>seconds</span></div>
+          </div>
+        </div>
+        <p class="muted" style="margin-top:1rem;font-size:var(--step--1)" data-cd-label>Target: {{launch.targetLabel}}</p>
+
+        <div class="notify">
+          <a class="btn" href="https://wa.me/{{contact.whatsapp}}?text=Salamu%20—%20please%20send%20me%20the%20TabTune%20Studio%20link%20the%20hour%20it%20goes%20live%20on%20the%20Chrome%20Web%20Store.">
+            <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"/></svg>
+            Notify me on WhatsApp
+          </a>
+          <a class="btn btn--ghost" href="mailto:{{contact.email}}?subject=TabTune%20Studio%20launch%20link">
+            <svg class="ico" aria-hidden="true"><use href="#i-mail"/></svg>
+            Notify me by email
+          </a>
+        </div>
+        <p class="notify__note">{{comingSoon.formNote}}</p>
+        <div class="sticker sticker--mast-a" aria-hidden="true">{{> art/sticker-disc}}</div>
+      </div>
+
+      <aside class="panel panel--pad">
+        <h2 class="mono" style="font-size:.72rem;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-faint);font-weight:600">{{comingSoon.mapTitle}}</h2>
+        <ul class="miles">
+          {{#comingSoon.milestones}}
+          <li class="mile {{?done}}mile--done{{/done}}{{^done}}mile--todo{{/done}}">
+            <span class="mile__box">
+              {{?done}}<svg class="ico" aria-hidden="true"><use href="#i-check"/></svg>{{/done}}
+              {{^done}}<svg class="ico" aria-hidden="true"><use href="#i-clock"/></svg>{{/done}}
+            </span>
+            <span class="mile__label">{{label}}</span>
+            <span class="mile__state">{{?done}}shipped{{/done}}{{^done}}next{{/done}}</span>
+          </li>
+          {{/comingSoon.milestones}}
+        </ul>
+      </aside>
+    </div>
+  </section>
+
+  <section class="section" data-sec="day" aria-labelledby="install-title">
+    <div class="shell">
+      <div class="sechead reveal">
+        <p class="eyebrow">Do it today</p>
+        <h2 id="install-title">{{comingSoon.installTitle}}</h2>
+        <p class="lede">{{comingSoon.installSub}}</p>
+      </div>
+
+      <ol class="install" style="max-width:70ch">
+        {{#comingSoon.installSteps}}
+        <li class="reveal" style="--reveal-delay:{{revealDelay}}ms">
+          <b>{{n}}</b>
+          <div><strong>{{title}}</strong><span>{{body}}</span></div>
+        </li>
+        {{/comingSoon.installSteps}}
+      </ol>
+
+      <p style="margin-top:1.75rem">
+        <a class="btn" href="{{site.authorUrl}}/tabtune-studio">
+          <svg class="ico" aria-hidden="true"><use href="#i-github"/></svg>
+          Open the repository
+        </a>
+      </p>
+    </div>
+  </section>
+
+</main>
+
+{{> footer}}
+
+<script type="module" src="/assets/js/site.js"></script>
+</body>
+</html>

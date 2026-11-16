@@ -64,6 +64,24 @@ const btnTestPool = $('btnTestPool'), poolTestStatus = $('poolTestStatus'), mode
 const sidePanelStatus = $('sidePanelStatus');
 let lastSidePanelError = '';
 
+// Icons and the theme switch
+const themeBtn = $('themeBtn');
+const keysWarn = $('keysWarn');
+const badgeVersion = $('badgeVersion');
+const cdRing = $('cdRing');
+// If lib/icons.js failed to load, fall back to plain labels instead of vanishing icons.
+const ICO = window.TabTuneIcons || {
+  icon: () => '',
+  set: () => {},
+  label: (btn, _name, text) => {
+    if (!btn) return;
+    const lbl = btn.querySelector('.lbl');
+    if (lbl) lbl.textContent = text;
+    else btn.textContent = text;
+  }
+};
+const icon = (n) => ICO.icon(n);
+
 // Countdown + memory elements
 const countdownOverlay = $('countdownOverlay'), countdownNum = $('countdownNum'), countdownCancel = $('countdownCancel');
 const countdownToggle = $('countdownToggle'), countdownSecs = $('countdownSecs');
@@ -98,7 +116,8 @@ viz.classList.add('idle');
 let toastTimer = null;
 function toast(msg, type = 'info') {
   const t = $('toast');
-  t.textContent = msg;
+  t.innerHTML = icon(type === 'err' ? 'warn' : type === 'success' ? 'check' : 'wave') + '<span></span>';
+  t.querySelector('span').textContent = msg;
   t.className = 'toast' + (type === 'err' ? ' err' : type === 'success' ? ' success' : '');
   t.hidden = false;
   clearTimeout(toastTimer);
@@ -129,7 +148,7 @@ function fmtLrcTimestamp(sec) {
 
 // ---------- Gemini Multi-Key Pool Engine with Instant Failover ----------
 // NOTE: pool comes from chrome.storage.local only. Empty pool = user must
-// add keys in ⚙ Settings (stored in browser, never in git).
+// add keys in settings (stored in the browser, never in git).
 
 async function getHealthyKeyPool() {
   const { storedKeys } = await chrome.storage.local.get('storedKeys');
@@ -154,7 +173,7 @@ async function getHealthyKeyPool() {
 
 function requireKeys() {
   if (!currentPool || !currentPool.length) {
-    toast('No Gemini API keys yet! Click ⚙ Settings and paste at least 1 key. 🔒 Keys stay in your browser only.', 'err');
+    toast('No Gemini keys yet. Open settings (the gear) and paste at least one. Keys stay in this browser only.', 'err');
     return false;
   }
   return true;
@@ -162,7 +181,7 @@ function requireKeys() {
 
 async function callGemini(payloadBuilder) {
   const pool = await getHealthyKeyPool();
-  if (!pool.length) throw new Error('No Gemini API keys configured. Open ⚙ Settings and add at least one key.');
+  if (!pool.length) throw new Error('No Gemini keys configured. Open settings (the gear) and add at least one.');
   const { settings } = await chrome.storage.local.get('settings');
   const chosenModel = settings?.model || 'gemini-flash-latest';
 
@@ -234,6 +253,7 @@ function setRecordingUI(on, startedAt = Date.now()) {
   isRecording = on;
   recBtn.classList.toggle('recording', on);
   recLabel.textContent = on ? 'Stop & Finish Recording' : 'Start Recording';
+  ICO.set(recBtn, on ? 'stop' : 'mic');
   cancelBtn.hidden = !on;
   formatEl.disabled = on;
   bitrateEl.disabled = on;
@@ -309,14 +329,25 @@ function runCountdownThenStart() {
   recBtn.disabled = true;
   recLabel.textContent = 'Get ready…';
   countdownOverlay.hidden = false;
+  if (cdRing) {
+    cdRing.classList.remove('go');
+    cdRing.style.strokeDashoffset = '0';
+  }
   const steps = [];
   for (let s = totalSecs; s >= 1; s--) steps.push(String(s));
   steps.push('GO!');
 
+  let ringStep = 0;
   steps.forEach((label, i) => {
     countdownTimers.push(setTimeout(() => {
       countdownNum.textContent = label;
       countdownNum.classList.toggle('go', label === 'GO!');
+      // The ring drains as the seconds run out.
+      if (cdRing) {
+        const left = label === 'GO!' ? 0 : Math.max(0, totalSecs - ringStep);
+        cdRing.style.strokeDashoffset = String(100 - (left / totalSecs) * 100);
+        ringStep++;
+      }
       // restart pop animation
       countdownNum.style.animation = 'none';
       void countdownNum.offsetWidth;
@@ -343,10 +374,10 @@ async function doStartRecording() {
     if (!res?.ok) throw new Error(res?.error || 'Could not start recording.');
     setRecordingUI(true);
     if (res.tabTitle) {
-      tabNameEl.textContent = `● Recording: ${res.tabTitle}`;
+      tabNameEl.textContent = `Recording: ${res.tabTitle}`;
       if (!titleEl.value.trim()) titleEl.value = res.tabTitle.slice(0, 100);
     }
-    toast('Tab audio capture started 🎙 (popup can close — REC badge keeps it alive)', 'success');
+    toast('Capture started. You can close this — the REC badge keeps it alive.', 'success');
   } catch (err) {
     setRecordingUI(false);
     toast(err.message, 'err');
@@ -395,12 +426,12 @@ recBtn.addEventListener('click', async () => {
       if (!res?.ok) throw new Error(res?.error || 'Failed to stop recording.');
 
       setRecordingUI(false);
-      tabNameEl.textContent = 'Audio ready in studio player ✓';
+      tabNameEl.textContent = 'Audio ready in the studio player';
 
       currentAudio = res;
       loadAudioIntoPlayer(res);
       await persistTake(res);
-      toast(`Captured ${res.durationSec}s — auto-saved to Take Memory 💾`, 'success');
+      toast(`Captured ${res.durationSec}s — saved to take memory`, 'success');
     }
   } catch (err) {
     setRecordingUI(false);
@@ -430,7 +461,7 @@ function loadAudioIntoPlayer(audioData) {
   playerDuration.textContent = `00:00 / ${fmtSec(audioData.durationSec)}`;
   audioSeek.value = 0;
   playerCard.hidden = false;
-  btnPlayPause.textContent = '▶ Play';
+  ICO.label(btnPlayPause, 'play', 'Play');
 }
 
 // ---------- Take Memory UI (IndexedDB history) ----------
@@ -462,7 +493,7 @@ async function refreshTakesList() {
     info.title = `${t.title || ''} — ${fmtDate(t.createdAt)}`;
     const load = document.createElement('button');
     load.className = 'take-load';
-    load.textContent = 'Load';
+    load.innerHTML = icon('download') + '<span>Load</span>';
     load.title = 'Load this take into the player';
     load.addEventListener('click', async () => {
       try {
@@ -472,13 +503,14 @@ async function refreshTakesList() {
         currentTakeId = full.id;
         if (full.title && !titleEl.value.trim()) titleEl.value = full.title;
         loadAudioIntoPlayer(full);
-        tabNameEl.textContent = `Loaded: ${full.title || 'take'} ✓`;
-        toast('Take loaded into player ✓', 'success');
+        tabNameEl.textContent = `Loaded: ${full.title || 'take'}`;
+        toast('Take loaded into the player', 'success');
       } catch (e) { toast(e.message, 'err'); }
     });
     const del = document.createElement('button');
     del.className = 'take-del';
-    del.textContent = '✕';
+    del.innerHTML = icon('trash');
+    del.setAttribute('aria-label', 'Delete this take');
     del.title = 'Delete this take';
     del.addEventListener('click', async () => {
       try {
@@ -501,10 +533,10 @@ btnPlayPause.addEventListener('click', () => {
   if (!playerAudio.src) return;
   if (playerAudio.paused) {
     playerAudio.play();
-    btnPlayPause.textContent = '⏸ Pause';
+    ICO.label(btnPlayPause, 'pause', 'Pause');
   } else {
     playerAudio.pause();
-    btnPlayPause.textContent = '▶ Play';
+    ICO.label(btnPlayPause, 'play', 'Play');
   }
 });
 
@@ -549,7 +581,7 @@ playerAudio.addEventListener('timeupdate', () => {
 });
 
 playerAudio.addEventListener('ended', () => {
-  btnPlayPause.textContent = '▶ Play';
+  ICO.label(btnPlayPause, 'play', 'Play');
   audioSeek.value = 0;
 });
 
@@ -603,14 +635,21 @@ function renderKaraokeList() {
     div.dataset.index = index;
     div.dataset.time = item.time;
 
-    const timeTag = item.time >= 0 ? `<span class="karaoke-time">${fmtSec(item.time)}</span>` : '';
-    div.innerHTML = `${timeTag}<span>${item.text || '♪ (instrumental)'}</span>`;
+    if (item.time >= 0) {
+      const tag = document.createElement('span');
+      tag.className = 'karaoke-time';
+      tag.textContent = fmtSec(item.time);
+      div.appendChild(tag);
+    }
+    const words = document.createElement('span');
+    words.textContent = item.text || '(instrumental)';
+    div.appendChild(words);
 
     div.addEventListener('click', () => {
       if (item.time >= 0 && playerAudio.src) {
         playerAudio.currentTime = item.time;
         if (playerAudio.paused) playerAudio.play();
-        btnPlayPause.textContent = '⏸ Pause';
+        ICO.label(btnPlayPause, 'pause', 'Pause');
       }
     });
 
@@ -694,7 +733,7 @@ function stampCurrentTime() {
   lyricsEl.focus();
 
   autosave();
-  toast(`Stamped ${stamp} ✓`, 'success');
+  toast(`Stamped ${stamp}`, 'success');
 }
 
 btnStampTime.addEventListener('click', stampCurrentTime);
@@ -710,9 +749,8 @@ btnTranscribe.addEventListener('click', async () => {
   if (!requireKeys()) return;
 
   btnTranscribe.disabled = true;
-  const prevHtml = btnTranscribe.innerHTML;
-  btnTranscribe.innerHTML = '<span>⏳ Transcribing with Gemini...</span>';
-  toast('Gemini is listening to your recorded audio and extracting lyrics...', 'info');
+  ICO.label(btnTranscribe, 'clock', 'Transcribing…');
+  toast('Gemini is listening to your take and writing the timestamps', 'info');
 
   const lang = transcribeLang.value;
   const langInstructions = lang === 'swahili'
@@ -753,13 +791,13 @@ RULES:
     lyricsEl.value = cleanLrc;
     autosave();
     renderKaraokeList();
-    toast('Gemini lyrics transcription complete! ✓', 'success');
+    toast('Transcription finished', 'success');
   } catch (err) {
     console.error('[TabTune Gemini Transcribe Error]', err);
     toast(`Transcription error: ${err.message}`, 'err');
   } finally {
     btnTranscribe.disabled = false;
-    btnTranscribe.innerHTML = prevHtml;
+    ICO.label(btnTranscribe, 'sparkle', 'Transcribe with Gemini');
   }
 });
 
@@ -768,13 +806,12 @@ RULES:
 btnFetchLrclib.addEventListener('click', async () => {
   const query = titleEl.value.trim();
   if (!query) {
-    toast('Enter a track or song title first to search LRCLIB 🔍', 'err');
+    toast('Enter a track or song title first', 'err');
     return;
   }
 
   btnFetchLrclib.disabled = true;
-  const prevText = btnFetchLrclib.innerHTML;
-  btnFetchLrclib.innerHTML = '<span>🔍 Searching LRCLIB...</span>';
+  ICO.label(btnFetchLrclib, 'clock', 'Searching…');
 
   try {
     const url = `https://lrclib.net/api/search?q=${encodeURIComponent(query)}`;
@@ -796,7 +833,7 @@ btnFetchLrclib.addEventListener('click', async () => {
       }
       autosave();
       renderKaraokeList();
-      toast(`Loaded synced lyrics for "${withSync.trackName}" by ${withSync.artistName} ✓`, 'success');
+      toast(`Loaded synced lyrics for "${withSync.trackName}"`, 'success');
     } else if (data[0].plainLyrics) {
       lyricsEl.value = data[0].plainLyrics;
       autosave();
@@ -809,7 +846,7 @@ btnFetchLrclib.addEventListener('click', async () => {
     toast(`LRCLIB error: ${err.message}`, 'err');
   } finally {
     btnFetchLrclib.disabled = false;
-    btnFetchLrclib.innerHTML = prevText;
+    ICO.label(btnFetchLrclib, 'search', 'Fetch online');
   }
 });
 
@@ -867,7 +904,7 @@ document.querySelectorAll('.ai-btn').forEach(btn => {
     const kind = btn.dataset.ai;
     const lyrics = lyricsEl.value.trim();
     if (!lyrics) {
-      toast('Write, paste, or transcribe lyrics first ✍', 'err');
+      toast('Write, paste or transcribe some lyrics first', 'err');
       return;
     }
     await getHealthyKeyPool();
@@ -887,9 +924,11 @@ document.querySelectorAll('.ai-btn').forEach(btn => {
       });
       aiText.classList.remove('loading');
       aiText.textContent = result;
+      delete aiText.dataset.err;
     } catch (err) {
       aiText.classList.remove('loading');
-      aiText.textContent = `⚠ ${err.message}`;
+      aiText.textContent = err.message;
+      aiText.dataset.err = '1';
     } finally {
       document.querySelectorAll('.ai-btn').forEach(b => b.disabled = false);
     }
@@ -897,17 +936,17 @@ document.querySelectorAll('.ai-btn').forEach(btn => {
 });
 
 aiApply.addEventListener('click', () => {
-  if (aiText.textContent && !aiText.textContent.startsWith('⚠')) {
+  if (aiText.textContent && aiText.dataset.err !== '1') {
     lyricsEl.value = aiText.textContent;
     autosave();
     renderKaraokeList();
-    toast('Applied AI result to lyrics ✓', 'success');
+    toast('Applied the result to your lyrics', 'success');
   }
 });
 
 aiCopy.addEventListener('click', async () => {
   await navigator.clipboard.writeText(aiText.textContent);
-  toast('Copied to clipboard ✓', 'success');
+  toast('Copied to clipboard', 'success');
 });
 
 aiClose.addEventListener('click', () => {
@@ -934,7 +973,7 @@ btnExportZip.addEventListener('click', async () => {
       metadata: `Language: ${transcribeLang.value}\nExported via: TabTune Studio MV3`
     });
     if (!res?.ok) throw new Error(res?.error || 'Export failed.');
-    toast(`Exported "${title}.zip" (${res.durationSec}s) ✓`, 'success');
+    toast(`Exported "${title}.zip" (${res.durationSec}s)`, 'success');
   } catch (err) {
     toast(err.message, 'err');
   } finally {
@@ -956,7 +995,7 @@ btnExportLrc.addEventListener('click', () => {
   a.download = `${title}.lrc`;
   a.click();
   URL.revokeObjectURL(url);
-  toast(`Downloaded ${title}.lrc ✓`, 'success');
+  toast(`Downloaded ${title}.lrc`, 'success');
 });
 
 btnExportAudio.addEventListener('click', () => {
@@ -969,7 +1008,7 @@ btnExportAudio.addEventListener('click', () => {
   a.href = currentAudio.audioDataUrl;
   a.download = `${title}.${currentAudio.ext || 'webm'}`;
   a.click();
-  toast(`Downloaded ${a.download} ✓`, 'success');
+  toast(`Downloaded ${a.download}`, 'success');
 });
 
 // ---------- Keyboard Shortcuts Listener ----------
@@ -1094,15 +1133,34 @@ if (sideBtn) {
         lastErr = e.message || String(e);
       }
       if (lastErr === 'API_MISSING' || /no such api|undefined/i.test(lastErr)) {
-        lastSidePanelError = 'API missing — reload extension (↻), Chrome 116+ needed';
-        toast('Side Panel API missing — RELOAD extension at chrome://extensions (↻), Chrome 116+ needed. Or use ⤢ full-tab.', 'err');
+        lastSidePanelError = 'API missing — reload the extension, Chrome 116+ needed';
+        toast('Side Panel API missing. Reload the extension at chrome://extensions — Chrome 116+ needed. Or use the full-tab button.', 'err');
       } else {
         lastSidePanelError = String(lastErr).slice(0, 120);
-        toast(`Side Panel failed (${String(lastErr).slice(0, 90)}). Use ⤢ full-tab mode instead.`, 'err');
+        toast(`Side panel failed (${String(lastErr).slice(0, 90)}). Use the full-tab button instead.`, 'err');
       }
       updateSidePanelStatus();
     });
   }
+}
+
+// ---------- Theme (night / day) ----------
+function applyTheme(mode) {
+  const night = mode === 'night';
+  document.documentElement.setAttribute('data-theme', night ? 'night' : 'day');
+  if (!themeBtn) return;
+  const use = themeBtn.querySelector('use');
+  if (use) use.setAttribute('href', night ? '#tt-sun' : '#tt-moon');
+  themeBtn.setAttribute('aria-label', night ? 'Switch to the day theme' : 'Switch to the night theme');
+  themeBtn.title = themeBtn.getAttribute('aria-label');
+}
+
+if (themeBtn) {
+  themeBtn.addEventListener('click', () => {
+    const next = document.documentElement.getAttribute('data-theme') === 'night' ? 'day' : 'night';
+    applyTheme(next);
+    chrome.storage.local.set({ theme: next }).catch(() => {});
+  });
 }
 
 // ---------- Side Panel self-diagnosis (answers "shida ni nini?") ----------
@@ -1119,27 +1177,59 @@ function updateSidePanelStatus() {
   const v = chromeMajorVersion();
   if (apiOk && v >= 116) {
     sidePanelStatus.textContent = lastSidePanelError
-      ? `⚠️ API ready (Chrome ${v}) but last open failed: ${lastSidePanelError}`
-      : `✅ Ready (Chrome ${v}) — tap 📌 to dock the studio`;
+      ? `Ready (Chrome ${v}) but the last open failed: ${lastSidePanelError}`
+      : `Ready (Chrome ${v}) — the pin button docks the studio`;
   } else if (apiOk) {
-    sidePanelStatus.textContent = `⚠️ API present but Chrome ${v || '?'} < 116 — update Chrome`;
+    sidePanelStatus.textContent = `Chrome ${v || '?'} is below 116 — update Chrome`;
   } else {
     sidePanelStatus.textContent = lastSidePanelError
-      ? `❌ ${lastSidePanelError}`
-      : `❌ API missing — reload extension (↻) at chrome://extensions`;
+      ? lastSidePanelError
+      : 'Side Panel API missing — reload the extension at chrome://extensions';
   }
 }
 
+function toggleDrawer(modal, btn) {
+  const open = modal.hidden;
+  modal.hidden = !open;
+  btn.setAttribute('aria-expanded', String(open));
+  if (open) {
+    // Only one drawer at a time.
+    for (const [m, b] of [[shortcutsModal, shortcutsBtn], [settingsModal, settingsBtn]]) {
+      if (m && m !== modal) { m.hidden = true; b.setAttribute('aria-expanded', 'false'); }
+    }
+    const first = modal.querySelector('button, select, textarea');
+    if (first) first.focus();
+  } else {
+    btn.focus();
+  }
+  return open;
+}
+
+// Escape closes whichever drawer is open and returns focus to its button.
+document.addEventListener('keydown', (e) => {
+  if (e.key !== 'Escape') return;
+  for (const [m, b] of [[shortcutsModal, shortcutsBtn], [settingsModal, settingsBtn]]) {
+    if (m && !m.hidden) {
+      m.hidden = true;
+      b.setAttribute('aria-expanded', 'false');
+      b.focus();
+      return;
+    }
+  }
+});
+
 shortcutsBtn.addEventListener('click', () => {
-  shortcutsModal.hidden = !shortcutsModal.hidden;
+  toggleDrawer(shortcutsModal, shortcutsBtn);
 });
 closeShortcutsBtn.addEventListener('click', () => {
   shortcutsModal.hidden = true;
+  shortcutsBtn.setAttribute('aria-expanded', 'false');
+  shortcutsBtn.focus();
 });
 
 settingsBtn.addEventListener('click', async () => {
-  settingsModal.hidden = !settingsModal.hidden;
-  if (!settingsModal.hidden) {
+  const open = toggleDrawer(settingsModal, settingsBtn);
+  if (open) {
     const pool = await getHealthyKeyPool();
     apiKeysArea.value = pool.join('\n');
     poolCountBadge.textContent = `${pool.length} Active Keys`;
@@ -1148,6 +1238,8 @@ settingsBtn.addEventListener('click', async () => {
 });
 closeSettingsBtn.addEventListener('click', () => {
   settingsModal.hidden = true;
+  settingsBtn.setAttribute('aria-expanded', 'false');
+  settingsBtn.focus();
 });
 
 saveSettings.addEventListener('click', async () => {
@@ -1163,11 +1255,13 @@ saveSettings.addEventListener('click', async () => {
     settings: { model: modelEl.value }
   });
   currentPool = keysToSave;
-  poolCountBadge.textContent = `${keysToSave.length} Active Keys`;
+  poolCountBadge.textContent = `${keysToSave.length} ${keysToSave.length === 1 ? 'key' : 'keys'}`;
+  if (keysWarn) keysWarn.hidden = keysToSave.length > 0;
   settingsModal.hidden = true;
+  settingsBtn.setAttribute('aria-expanded', 'false');
   toast(keysToSave.length
-    ? `Configuration saved (${keysToSave.length} keys in pool) ✓`
-    : 'Key pool cleared. Add keys any time in ⚙ Settings.', 'success');
+    ? `Configuration saved — ${keysToSave.length} ${keysToSave.length === 1 ? 'key' : 'keys'} in the pool`
+    : 'Key pool cleared. You can add keys again at any time.', 'success');
 });
 
 // Test All Keys Button
@@ -1202,14 +1296,23 @@ btnTestPool.addEventListener('click', async () => {
 // ---------- Initialization ----------
 (async function init() {
   // Restore pool & settings (GitHub-safe: no keys in code, storage only)
-  const { storedKeys, settings, draft, countdownOn, countdownSecsVal } = await chrome.storage.local.get(['storedKeys', 'settings', 'draft', 'countdownOn', 'countdownSecsVal']);
+  const { storedKeys, settings, draft, countdownOn, countdownSecsVal, theme } = await chrome.storage.local.get(['storedKeys', 'settings', 'draft', 'countdownOn', 'countdownSecsVal', 'theme']);
+
+  // Version straight from the manifest, so it can never drift.
+  if (badgeVersion) {
+    try { badgeVersion.textContent = 'v' + chrome.runtime.getManifest().version; } catch (e) {}
+  }
+
+  // Night / day: saved choice first, then the operating system's.
+  applyTheme(theme || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'night' : 'day'));
 
   await getHealthyKeyPool(); // also imports local config.js once if present
   // Do NOT overwrite user storage with defaults anymore.
   if (storedKeys && Array.isArray(storedKeys)) currentPool = storedKeys.filter(k => k && k.trim().length > 10);
-  poolCountBadge.textContent = `${currentPool.length} Active Keys`;
+  poolCountBadge.textContent = `${currentPool.length} ${currentPool.length === 1 ? 'key' : 'keys'}`;
+  if (keysWarn) keysWarn.hidden = currentPool.length > 0;
 
-  if (settings?.model) {
+  if (settings?.model && [...modelEl.options].some((o) => o.value === settings.model)) {
     modelEl.value = settings.model;
   }
 
@@ -1246,7 +1349,7 @@ btnTestPool.addEventListener('click', async () => {
   const stateRes = await chrome.runtime.sendMessage({ type: 'BG_GET_STATE' }).catch(() => null);
   if (stateRes?.ok && stateRes.recState?.recording) {
     setRecordingUI(true, stateRes.recState.startedAt);
-    tabNameEl.textContent = `● Recording: ${stateRes.recState.tabTitle || 'tab'}`;
+    tabNameEl.textContent = `Recording: ${stateRes.recState.tabTitle || 'tab'}`;
   } else {
     let restored = null;
     const lastRecRes = await chrome.runtime.sendMessage({ type: 'BG_GET_LAST_RECORDING' }).catch(() => null);
@@ -1264,17 +1367,18 @@ btnTestPool.addEventListener('click', async () => {
       currentAudio = restored;
       if (restored.id) currentTakeId = restored.id;
       loadAudioIntoPlayer(restored);
-      tabNameEl.textContent = 'Audio restored from memory 💾';
+      tabNameEl.textContent = 'Audio restored from memory';
       if (recoverBar) {
         recoverBar.hidden = false;
-        if (recoverText) recoverText.textContent = `Recovered "${(restored.title || 'last take').slice(0, 40)}" (${fmtSec(restored.durationSec)}) — nothing was lost ✓`;
+        if (recoverText) recoverText.textContent = `Recovered "${(restored.title || 'last take').slice(0, 40)}" (${fmtSec(restored.durationSec)}) — nothing was lost`;
       }
     }
   }
 
   // Gentle first-run hint when no keys exist (without blocking recording).
   if (!currentPool.length) {
-    poolCountBadge.textContent = '0 Active Keys — add in ⚙';
+    poolCountBadge.textContent = 'No keys yet';
+    if (keysWarn) keysWarn.hidden = false;
   }
 
   updateSidePanelStatus();

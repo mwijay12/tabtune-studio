@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js" data-mode="night" data-theme="night">
+<head>
+{{> head}}
+<meta name="robots" content="noindex">
+</head>
+<body>
+
+{{> icons}}
+{{> field}}
+{{> scroll-progress}}
+{{> header}}
+
+<main id="main" class="page">
+  <section class="pagemast" data-sec="night">
+    <div class="shell" style="max-width:46rem">
+      <p class="eyebrow">404</p>
+      <h1 style="margin-top:1rem">That page is not on the map.</h1>
+      <p class="lede">The link is broken, or the page moved. Everything is one tap away from here.</p>
+
+      <div class="hero__actions">
+        <a class="btn" href="/">
+          <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg>
+          Back to the studio
+        </a>
+        <a class="btn btn--ghost" href="/shop/">Shop</a>
+        <a class="btn btn--ghost" href="/coming-soon/">Launch</a>
+      </div>
+    </div>
+
+    <div class="sticker sticker--gap" aria-hidden="true">{{> art/sticker-sparkles}}</div>
+  </section>
+</main>
+
+{{> footer}}
+
+<script type="module" src="/assets/js/site.js"></script>
+</body>
+</html>

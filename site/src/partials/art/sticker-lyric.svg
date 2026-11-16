@@ -1,0 +1,8 @@
+<svg class="doodle" viewBox="0 0 100 100" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <g class="blob"><path class="fill-sun" d="M50,7 C69,5 89,17 91,38 C93,58 84,71 78,82 C71,93 56,96 42,93 C27,90 11,83 9,64 C7,46 11,29 23,18 C32,11 38,8 50,7 Z" transform="rotate(9 50 50)"/></g>
+  <ellipse class="ink ink--fill d1" cx="34" cy="66" rx="9.5" ry="7.5" transform="rotate(-18 34 66)"/>
+  <ellipse class="ink ink--fill d2" cx="66" cy="58" rx="9.5" ry="7.5" transform="rotate(-18 66 58)"/>
+  <path class="ink d3" data-draw pathLength="1" d="M42,64 L42,32"/>
+  <path class="ink d4" data-draw pathLength="1" d="M74,56 L74,24"/>
+  <path class="ink d5" data-draw pathLength="1" d="M42,32 L74,24"/>
+</svg>

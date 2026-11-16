@@ -12,3 +12,7 @@ Thumbs.db
 .kilocode/
 node_modules/
 dist/
+
+# Website build output
+.cache/
+site/dist/

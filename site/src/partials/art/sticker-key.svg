@@ -1,0 +1,7 @@
+<svg class="doodle" viewBox="0 0 100 100" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <g class="blob"><path class="fill-violet" d="M50,7 C69,5 89,17 91,38 C93,58 84,71 78,82 C71,93 56,96 42,93 C27,90 11,83 9,64 C7,46 11,29 23,18 C32,11 38,8 50,7 Z" transform="rotate(4 50 50)"/></g>
+  <path class="ink d1" data-draw pathLength="1" d="M18,52 A13,13 0 1 1 44,52 A13,13 0 1 1 18,52"/>
+  <path class="ink d2" data-draw pathLength="1" d="M44,52 L78,52"/>
+  <path class="ink d3" data-draw pathLength="1" d="M66,52 L66,64"/>
+  <path class="ink d4" data-draw pathLength="1" d="M76,52 L76,62"/>
+</svg>

@@ -1,0 +1,131 @@
+/* ============================================================
+   Tokens — one source of truth for colour, type and rhythm.
+   Two themes (night, day) plus a "mix" mode where each section
+   shows the theme it was written for.
+   ============================================================ */
+
+/* ---------- Night (default) ---------- */
+:root {
+  --bg: #071022;
+  --bg-deep: #050b18;
+  --bg-lift: #0a1735;
+
+  --ink: #eaf0ff;
+  --ink-soft: #a9b8d6;
+  --ink-faint: #7a8db4;
+
+  --panel: rgba(255, 255, 255, 0.055);
+  --panel-2: rgba(255, 255, 255, 0.095);
+  --panel-solid: #0d1730;
+  --line: rgba(255, 255, 255, 0.13);
+  --line-strong: rgba(255, 255, 255, 0.28);
+
+  --accent: #eab308;
+  --accent-soft: rgba(234, 179, 8, 0.16);
+  --accent-ink: #0b1233;
+
+  --violet: #7c3aed;
+  --violet-deep: #5b21b6;
+  --gold: #eab308;
+  --sun: #f4d774;
+  --lilac: #dccfff;
+  --navy-800: #0b1233;
+
+  --contour-gold: rgba(234, 179, 8, 0.42);
+  --contour-violet: rgba(124, 58, 237, 0.5);
+  --contour-fade: 0.55;
+
+  --product: #38bdf8;
+  --product-deep: #0284c7;
+
+  --ok: #34d399;
+  --warn: #fbbf24;
+  --bad: #fb7185;
+
+  --shadow: 0 22px 60px -28px rgba(0, 0, 0, 0.85);
+  --shadow-lift: 0 34px 80px -34px rgba(0, 0, 0, 0.9);
+
+  --glass-blur: 18px;
+}
+
+/* ---------- Day ----------
+   The same set of values is handed to three places: the whole page in day
+   mode, one section at a time in mix mode, and the contour field behind
+   them, which has to recolour on its own because it is a fixed layer. */
+html[data-theme='day'],
+html[data-mode='mix'] [data-sec='day'],
+.field[data-sec='day'] {
+  --bg: #f7f6f2;
+  --bg-deep: #eceae3;
+  --bg-lift: #ffffff;
+
+  --ink: #0b1233;
+  --ink-soft: #4a5570;
+  --ink-faint: #66708c;
+
+  --panel: rgba(255, 255, 255, 0.72);
+  --panel-2: rgba(255, 255, 255, 0.9);
+  --panel-solid: #ffffff;
+  --line: rgba(11, 18, 51, 0.12);
+  --line-strong: rgba(11, 18, 51, 0.26);
+
+  --accent: #7c3aed;
+  --accent-soft: rgba(124, 58, 237, 0.12);
+  --accent-ink: #ffffff;
+
+  --violet: #7c3aed;
+  --violet-deep: #3b1a8f;
+  --gold: #b07d05;
+  --sun: #f4d774;
+  --lilac: #dccfff;
+  --navy-800: #10265c;
+
+  --contour-gold: rgba(176, 125, 5, 0.34);
+  --contour-violet: rgba(124, 58, 237, 0.26);
+  --contour-fade: 0.5;
+
+  --product: #0284c7;
+  --product-deep: #0369a1;
+
+  --ok: #047857;
+  --warn: #a16207;
+  --bad: #be123c;
+
+  --shadow: 0 18px 44px -26px rgba(11, 18, 51, 0.42);
+  --shadow-lift: 0 28px 64px -30px rgba(11, 18, 51, 0.5);
+}
+
+/* ---------- Type ---------- */
+:root {
+  --font-display: 'Fraunces Variable', 'Iowan Old Style', Georgia, 'Times New Roman', serif;
+  --font-sans: 'Inter Variable', system-ui, -apple-system, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  --font-mono: 'JetBrains Mono Variable', ui-monospace, 'SFMono-Regular', Menlo, Consolas, monospace;
+
+  --step--1: clamp(0.78rem, 0.75rem + 0.15vw, 0.86rem);
+  --step-0: clamp(0.95rem, 0.9rem + 0.2vw, 1.05rem);
+  --step-1: clamp(1.1rem, 1.02rem + 0.4vw, 1.35rem);
+  --step-2: clamp(1.35rem, 1.15rem + 0.9vw, 2rem);
+  --step-3: clamp(1.7rem, 1.3rem + 1.8vw, 2.9rem);
+  --step-4: clamp(2.1rem, 1.4rem + 3.2vw, 4.2rem);
+  --step-5: clamp(2.6rem, 1.4rem + 5.4vw, 6rem);
+
+  --measure: 62ch;
+  --shell: 1180px;
+  --gutter: clamp(1.15rem, 4vw, 2.75rem);
+  --section-y: clamp(4.5rem, 9vw, 9rem);
+
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-lg: 24px;
+  --r-xl: 34px;
+  --r-pill: 999px;
+
+  --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out: cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+/* ---------- Smooth scroll only when wanted ---------- */
+html { scroll-behavior: smooth; }
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+}

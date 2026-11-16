@@ -1,0 +1,5 @@
+<svg class="doodle" viewBox="0 0 100 100" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <path class="ink ink--fill d1" d="M56,18 C58,37 65,44 84,46 C65,48 58,55 56,74 C54,55 47,48 28,46 C47,44 54,37 56,18 Z"/>
+  <path class="ink ink--fill d3" d="M25,14 C26,22 28,24 36,25 C28,26 26,28 25,36 C24,28 22,26 14,25 C22,24 24,22 25,14 Z"/>
+  <path class="ink ink--fill d5" d="M78,66 C79,73 81,75 88,76 C81,77 79,79 78,86 C77,79 75,77 68,76 C75,75 77,73 78,66 Z"/>
+</svg>

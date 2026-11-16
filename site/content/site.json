@@ -1,0 +1,301 @@
+{
+  "site": {
+    "name": "TabTune Studio",
+    "shortName": "TabTune",
+    "version": "1.2.0",
+    "tagline": "Record any tab. Transcribe the lyrics. Ship the song.",
+    "description": "A Manifest V3 browser extension that captures tab audio, transcribes it with Gemini AI into synced .lrc lyrics, and exports a tidy studio bundle — built for Swahili, Sheng and English.",
+    "url": "https://tabtune.studio",
+    "author": "Altraware Technologies",
+    "authorHandle": "github.com/mwijay12",
+    "authorUrl": "https://github.com/mwijay12",
+    "madeIn": "Dar es Salaam, Tanzania",
+    "chromeMin": "116",
+    "ogLine": "Record any tab. Transcribe the lyrics.",
+    "ogKicker": "Manifest V3 · Chrome 116+"
+  },
+
+  "pages": {
+    "index": {
+      "title": "TabTune Studio — record tab audio, transcribe synced lyrics",
+      "description": "A Manifest V3 browser extension that captures tab audio, transcribes it with Gemini AI into synced .lrc lyrics, and exports a studio bundle. Built for Swahili, Sheng and English.",
+      "path": "/",
+      "ogAlt": "TabTune Studio on a navy contour map: a waveform sticker, a microphone and a panel showing synced lyrics.",
+      "navLabel": "Studio"
+    },
+    "shop": {
+      "title": "Shop",
+      "description": "Pro licences, the Bongo LRC pack, the studio sticker set, a printed tee and one-to-one producer setup calls.",
+      "path": "/shop/",
+      "ogAlt": "The TabTune Studio shop: Pro licence, lyric pack, sticker set, tee and setup call.",
+      "navLabel": "Shop"
+    },
+    "coming-soon": {
+      "title": "Coming soon — Chrome Web Store",
+      "description": "TabTune Studio is with Google for review. Leave a line and the link arrives the hour it goes live, or load it unpacked today.",
+      "path": "/coming-soon/",
+      "ogAlt": "TabTune Studio, coming soon to the Chrome Web Store.",
+      "navLabel": "Launch"
+    },
+    "404": {
+      "title": "Page not found",
+      "description": "That page is not here.",
+      "path": "/404.html",
+      "ogAlt": "Page not found.",
+      "navLabel": "404"
+    }
+  },
+
+  "nav": [
+    { "id": "features", "href": "/#features", "label": "Features" },
+    { "id": "how", "href": "/#how", "label": "How it works" },
+    { "id": "privacy", "href": "/#privacy", "label": "Privacy" },
+    { "id": "shop", "href": "/shop/", "label": "Shop" },
+    { "id": "coming-soon", "href": "/coming-soon/", "label": "Launch" }
+  ],
+
+  "hero": {
+    "eyebrow": "Manifest V3 · Chrome 116+",
+    "headline": "Record any tab. Transcribe the lyrics. Ship the song.",
+    "sub": "TabTune Studio grabs the audio playing in your browser tab, hands it to Gemini for a timestamped lyric sheet, and lets you sing along in a live karaoke view — without muting your speakers, without leaving the tab.",
+    "primaryCta": "Get notified at launch",
+    "primaryHref": "/coming-soon/",
+    "secondaryCta": "See how it works",
+    "secondaryHref": "#how",
+    "note": "Free and open install while the Web Store listing is in review."
+  },
+
+  "launch": {
+    "status": "Chrome Web Store review",
+    "start": "2026-10-15T09:00:00+03:00",
+    "target": "2026-12-01T18:00:00+03:00",
+    "targetLabel": "1 December 2026, 6pm EAT",
+    "progressPercent": 72,
+    "progressLabel": "Listing submitted, review in progress"
+  },
+
+  "stats": [
+    { "value": "2", "label": "capture formats — lossless WAV and Opus 320", "suffix": "" },
+    { "value": "10", "label": "takes kept in memory, through a browser restart", "suffix": "" },
+    { "value": "0", "label": "API keys in the source. They stay in your browser", "suffix": "" }
+  ],
+
+  "features": [
+    {
+      "id": "capture",
+      "icon": "wave",
+      "title": "Capture the tab, not the room",
+      "body": "Tab audio is routed through an AudioContext, so your speakers stay unmuted and no microphone hiss gets in. Choose WebM / Opus at up to 320 kbps, or WAV PCM 16-bit for FL Studio, Ableton and Logic."
+    },
+    {
+      "id": "countdown",
+      "icon": "clock",
+      "title": "A countdown that waits for you",
+      "body": "Pick 0, 3, 5 or 10 seconds before capture starts. That is your window to switch to the music tab and hit play, so the take begins at bar one instead of halfway through the second verse."
+    },
+    {
+      "id": "memory",
+      "icon": "disc",
+      "title": "Take memory",
+      "body": "Finished takes are written to IndexedDB. Close the popup, close the browser, come back tomorrow — the last ten takes are still there, and the newest one reloads itself with a note saying what it recovered."
+    },
+    {
+      "id": "transcribe",
+      "icon": "sparkle",
+      "title": "Gemini transcription, tuned for Bongo",
+      "body": "Send the audio to Gemini and get back synchronised .lrc lines. The prompt is written for Kiswahili, Sheng and code-switched verses, and it can detect the language on its own."
+    },
+    {
+      "id": "karaoke",
+      "icon": "lyric",
+      "title": "Karaoke view and a one-key stamper",
+      "body": "Play the take and the lines light up and scroll with it. Off by a beat? Put the cursor on the line and press Ctrl + T — the exact [mm:ss.xx] is stamped where your cursor is."
+    },
+    {
+      "id": "export",
+      "icon": "box",
+      "title": "One bundle, everything in it",
+      "body": "Export a .zip with the pristine audio, the synced .lrc, a clean .txt of the words and an info sheet with duration, bitrate and capture time. Or grab the .lrc on its own."
+    }
+  ],
+
+  "steps": [
+    {
+      "n": "01",
+      "title": "Open the tab that is playing",
+      "body": "YouTube, SoundCloud, Spotify Web, Beatstars, a local player — anything making sound in a tab."
+    },
+    {
+      "n": "02",
+      "title": "Hit record, take the countdown",
+      "body": "Alt + Shift + R works from anywhere. The countdown gives you time to reach the tab and press play."
+    },
+    {
+      "n": "03",
+      "title": "Let Gemini write the timestamps",
+      "body": "Or pull existing synced lyrics from LRCLIB. Both land in the same editor."
+    },
+    {
+      "n": "04",
+      "title": "Play it back, nudge, export",
+      "body": "Watch the karaoke view, stamp any line that drifts, then export the bundle."
+    }
+  ],
+
+  "shortcuts": [
+    { "keys": "Alt + Shift + R", "label": "Start or stop recording, from any tab" },
+    { "keys": "Space", "label": "Play or pause the preview" },
+    { "keys": "Ctrl + T", "label": "Stamp the current time on the cursor line" },
+    { "keys": "Ctrl + [", "label": "Jump back three seconds" },
+    { "keys": "Ctrl + ]", "label": "Jump forward three seconds" },
+    { "keys": "Ctrl + Shift + T", "label": "Transcribe with Gemini" },
+    { "keys": "Ctrl + Shift + L", "label": "Search LRCLIB" },
+    { "keys": "Ctrl + S", "label": "Export the studio .zip" },
+    { "keys": "Ctrl + E", "label": "Export the .lrc only" }
+  ],
+
+  "privacy": {
+    "title": "Your keys never leave your browser",
+    "body": "Gemini API keys are typed into the extension and stored in chrome.storage.local on your machine. Nothing is hardcoded in the source, so the repository can be pushed to GitHub without leaking a thing. When one key hits a rate limit, the pool rotates to the next one and carries on.",
+    "points": [
+      "No key is shipped in the repository — the pool starts empty.",
+      "No analytics, no telemetry, no account, no sign-in.",
+      "Audio is held in IndexedDB on your device until you delete the take.",
+      "The only outward calls are to Gemini and LRCLIB, and only when you press the button."
+    ]
+  },
+
+  "faq": [
+    {
+      "q": "Does it record the microphone?",
+      "a": "No. It captures the audio the tab is producing, through chrome.tabCapture. Your microphone is never opened, and your speakers stay unmuted."
+    },
+    {
+      "q": "Which browsers work?",
+      "a": "Anything Chromium with the Side Panel API: Chrome, Edge, Brave and Opera, version 116 or newer."
+    },
+    {
+      "q": "Do I need my own Gemini key?",
+      "a": "For transcription, yes — and it is free to make one in Google AI Studio. Paste one key or twenty; the extension rotates through them if one is rate limited. Keys stay in your browser's local storage."
+    },
+    {
+      "q": "Can it handle Swahili and Sheng?",
+      "a": "That is what it was built for. Pick Kiswahili, English or auto-detect, and the transcription prompt is written to hold on to Swahili syllables, rhyme and code-switching."
+    },
+    {
+      "q": "What happens if I close the popup mid-take?",
+      "a": "Nothing bad. A red REC badge stays on the toolbar icon and the offscreen recorder keeps going. Dock the studio with the pin button if you want a panel that cannot be dismissed by accident."
+    },
+    {
+      "q": "Is it on the Chrome Web Store yet?",
+      "a": "Not yet — the listing is in review. Until then you can load it unpacked in developer mode, which takes about thirty seconds."
+    }
+  ],
+
+  "shop": {
+    "eyebrow": "Shop",
+    "headline": "Things that go with the studio",
+    "sub": "The shop opens when the Web Store listing goes live. Until then every item is a reserve — send a message and we hold it for you.",
+    "orderNote": "Orders are completed over WhatsApp. No card is charged on this page.",
+    "items": [
+      {
+        "id": "pro-lifetime",
+        "art": "gem",
+        "name": "TabTune Studio Pro — lifetime",
+        "price": "TSh 45,000",
+        "priceNote": "placeholder price — set the real one before launch",
+        "blurb": "Every feature, for good: unlimited take memory, priority transcription routing, and the Pro sticker set.",
+        "bullets": ["Unlimited takes in memory", "Priority key-pool routing", "Pro sticker set, SVG and PNG"],
+        "tag": "Most wanted",
+        "stock": "reserve"
+      },
+      {
+        "id": "pro-year",
+        "art": "disc",
+        "name": "TabTune Studio Pro — one year",
+        "price": "TSh 18,000",
+        "priceNote": "placeholder price — set the real one before launch",
+        "blurb": "The same Pro features on a twelve-month licence, for producers who want to try it on a season of releases.",
+        "bullets": ["Unlimited takes in memory", "Priority key-pool routing", "Renews yearly"],
+        "tag": "",
+        "stock": "reserve"
+      },
+      {
+        "id": "lrc-pack",
+        "art": "lyric",
+        "name": "Bongo LRC pack",
+        "price": "TSh 12,000",
+        "priceNote": "placeholder price — set the real one before launch",
+        "blurb": "Forty synced lyric sheets in Kiswahili and Sheng, stamped line by line, to learn the timing craft from or use as session templates.",
+        "bullets": ["40 .lrc files", "Kiswahili, Sheng and mixed", "Editable, yours to keep"],
+        "tag": "",
+        "stock": "reserve"
+      },
+      {
+        "id": "sticker-pack",
+        "art": "sparkles",
+        "name": "Studio sticker pack",
+        "price": "TSh 8,000",
+        "priceNote": "placeholder price — set the real one before launch",
+        "blurb": "The twelve doodles you see on this site, as clean SVG plus transparent PNG at 512 and 1024. Cut them, print them, put them on a laptop.",
+        "bullets": ["12 stickers, SVG source", "PNG at 512 and 1024", "Personal use"],
+        "tag": "",
+        "stock": "reserve"
+      },
+      {
+        "id": "tee",
+        "art": "wave",
+        "name": "Studio tee",
+        "price": "TSh 35,000",
+        "priceNote": "placeholder price — set the real one before launch",
+        "blurb": "Heavy cotton, screen-printed waveform on the chest, sizes S to XXL. Printed in Dar es Salaam.",
+        "bullets": ["S to XXL", "Screen printed in Dar es Salaam", "Collect or deliver within the city"],
+        "tag": "",
+        "stock": "reserve"
+      },
+      {
+        "id": "call",
+        "art": "clock",
+        "name": "Producer setup call",
+        "price": "TSh 60,000",
+        "priceNote": "placeholder price — set the real one before launch",
+        "blurb": "Thirty minutes, screen shared. We set up your key pool, tune the capture format to your DAW and walk a full take from record to export.",
+        "bullets": ["30 minutes, one to one", "Key pool and DAW setup", "Record to export, end to end"],
+        "tag": "Two slots a week",
+        "stock": "reserve"
+      }
+    ]
+  },
+
+  "contact": {
+    "whatsapp": "255000000000",
+    "whatsappDisplay": "+255 000 000 000",
+    "email": "hello@tabtune.studio",
+    "note": "PLACEHOLDER — replace with the real WhatsApp number and email before publishing."
+  },
+
+  "comingSoon": {
+    "eyebrow": "Chrome Web Store · in review",
+    "headline": "TabTune Studio is almost on the shelf.",
+    "sub": "The extension is finished and the listing is with Google. Leave a line and we will send the link the hour it goes live — no newsletter, no drip, one message.",
+    "formNote": "This form opens your own mail app or WhatsApp. Nothing is stored on a server.",
+    "mapTitle": "Where the build stands",
+    "milestones": [
+      { "label": "Capture engine, WAV and Opus", "done": true },
+      { "label": "Take memory over IndexedDB", "done": true },
+      { "label": "Gemini transcription and key pool", "done": true },
+      { "label": "Karaoke view and time stamper", "done": true },
+      { "label": "Export bundles and shortcuts", "done": true },
+      { "label": "Chrome Web Store review", "done": false },
+      { "label": "Public launch", "done": false }
+    ],
+    "installTitle": "Do not want to wait? Load it now.",
+    "installSub": "Developer mode takes about thirty seconds and the extension is exactly the build that will ship.",
+    "installSteps": [
+      { "n": "1", "title": "Open chrome://extensions", "body": "Switch Developer mode on, top right." },
+      { "n": "2", "title": "Load unpacked", "body": "Pick the TabTune Studio folder you cloned or unzipped." },
+      { "n": "3", "title": "Pin it", "body": "Puzzle icon, then pin TabTune Studio to the toolbar." },
+      { "n": "4", "title": "Add a Gemini key", "body": "Gear icon, paste one key per line, save. Recording works without it." }
+    ]
+  }
+}
