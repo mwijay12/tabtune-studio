@@ -128,9 +128,11 @@ The site runs on Vercel as the project **`tabtune-studio`**, in the `davidbyanmw
 | Build command | `npm run build` |
 | Output directory | `dist` |
 | Production branch | `main` |
-| Node | `22.x`, pinned in `site/vercel.json` |
+| Node | `22.x`, pinned through `engines` in `site/package.json` |
 
 `site/vercel.json` also sets clean URLs, immutable caching for `/assets/*` and `/fonts/*`, and `nosniff`, `Referrer-Policy` and `X-Frame-Options` on everything else.
+
+Node is pinned because the build rasterises the share card, the favicon and the extension icons with `@resvg/resvg-js`, whose native binary is built per Node major. A silent bump to a new major can turn the share card into a blank rectangle, so the version is fixed rather than left on a `>=` range that Vercel would upgrade on its own.
 
 Any static host does the same thing: run the build, publish `dist/`. The only thing Vercel adds is the clean-URL rewrite and the headers, so on another host serve `/shop/index.html` for `/shop` and copy the headers across.
 
