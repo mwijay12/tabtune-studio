@@ -118,7 +118,23 @@ The rules it keeps:
 
 ### Deploying
 
-`site/vercel.json` builds with `npm run build` and serves `dist/`. Any static host does the same thing: run the build, publish `dist/`.
+The site runs on Vercel as the project **`tabtune-studio`**, in the `davidbyanmwijage-7829's projects` team, from `https://tabtune-studio.vercel.app`.
+
+| Setting | Value |
+| --- | --- |
+| Root directory | `site` |
+| Framework preset | Vite (a preset is required on Vercel; the project is really a plain Node build) |
+| Install command | `npm install` |
+| Build command | `npm run build` |
+| Output directory | `dist` |
+| Production branch | `main` |
+| Node | `22.x`, pinned in `site/vercel.json` |
+
+`site/vercel.json` also sets clean URLs, immutable caching for `/assets/*` and `/fonts/*`, and `nosniff`, `Referrer-Policy` and `X-Frame-Options` on everything else.
+
+Any static host does the same thing: run the build, publish `dist/`. The only thing Vercel adds is the clean-URL rewrite and the headers, so on another host serve `/shop/index.html` for `/shop` and copy the headers across.
+
+Vercel's automatic git deployments are switched **off** for this project. A push to `main` does not deploy on its own — either turn **Git → Automatic deployments** on in the project settings, or deploy from the Vercel dashboard or CLI.
 
 ---
 
