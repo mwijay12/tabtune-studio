@@ -134,9 +134,9 @@ The site runs on Vercel as the project **`tabtune-studio`**, in the `davidbyanmw
 
 Node is pinned because the build rasterises the share card, the favicon and the extension icons with `@resvg/resvg-js`, whose native binary is built per Node major. A silent bump to a new major can turn the share card into a blank rectangle, so the version is fixed rather than left on a `>=` range that Vercel would upgrade on its own.
 
-Any static host does the same thing: run the build, publish `dist/`. The only thing Vercel adds is the clean-URL rewrite and the headers, so on another host serve `/shop/index.html` for `/shop` and copy the headers across.
+Git deployments are already wired up: a push to `main` builds and promotes to production on its own, and a push to a branch builds a preview at `tabtune-studio-git-<branch>-<account>.vercel.app`.
 
-Vercel's automatic git deployments are switched **off** for this project. A push to `main` does not deploy on its own — either turn **Git → Automatic deployments** on in the project settings, or deploy from the Vercel dashboard or CLI.
+Any static host does the same thing: run the build, publish `dist/`. The only thing Vercel adds is the clean-URL rewrite and the headers, so on another host serve `/shop/index.html` for `/shop` and copy the headers across.
 
 ---
 
