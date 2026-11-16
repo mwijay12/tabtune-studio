@@ -1,0 +1,138 @@
+/* ============================================================
+   Stickers — four layers, one job each.
+
+     .sticker          placement + resting tilt, CSS only
+     .sticker__drift   y and rotation follow scroll position
+     .sticker__body    scale and pop-in rotation
+     .doodle           leans with scroll velocity
+
+   No two animations ever touch the same property of the same
+   element. Stickers are decoration: aria-hidden, pointer-events
+   none, never placed on words at rest.
+   ============================================================ */
+
+.sticker {
+  position: absolute;
+  z-index: 3;
+  width: var(--w, 132px);
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-select: none;
+  rotate: var(--tilt, -6deg);
+}
+
+.sticker__drift,
+.sticker__body { display: block; }
+
+.sticker__drift {
+  transform: translate3d(0, var(--drift, 0px), 0) rotate(var(--spin, 0deg));
+  will-change: transform;
+}
+
+.sticker__body {
+  transform: scale(var(--pop, 0.72));
+  opacity: 0;
+  transition: transform 0.62s var(--ease-out), opacity 0.42s var(--ease);
+  transform-origin: 50% 60%;
+  will-change: transform, opacity;
+}
+.sticker.is-in .sticker__body {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.doodle {
+  width: 100%;
+  height: auto;
+  overflow: visible;
+  transform: rotate(var(--lean, 0deg));
+  transform-origin: 50% 85%;
+  transition: transform 0.5s var(--ease-out);
+  will-change: transform;
+}
+
+/* ---------- The drawing: blob backing, then ink ---------- */
+.doodle .blob {
+  transform: scale(0.82);
+  transform-origin: 50% 55%;
+  opacity: 0;
+  transition: transform 0.55s var(--ease-out), opacity 0.4s var(--ease);
+}
+.sticker.is-in .doodle .blob,
+.good.is-in .doodle .blob {
+  transform: scale(1);
+  opacity: 1;
+}
+
+.doodle .ink {
+  stroke: var(--navy-800);
+  stroke-width: var(--ink-w, 4.6);
+  stroke-linecap: round;
+  stroke-linejoin: round;
+  fill: none;
+}
+.doodle .ink--fill { fill: var(--navy-800); stroke: none; }
+
+/* Every drawn path carries pathLength="1", so one rule draws them all. */
+.doodle [data-draw] {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+  transition: stroke-dashoffset 0.55s var(--ease-out);
+  transition-delay: var(--dd, 0s);
+}
+.sticker.is-in .doodle [data-draw],
+.good.is-in .doodle [data-draw] { stroke-dashoffset: 0; }
+
+/* Stagger: the ink is drawn on 0.06s apart, one class per path. */
+.d1 { --dd: 0s; }
+.d2 { --dd: 0.06s; }
+.d3 { --dd: 0.12s; }
+.d4 { --dd: 0.18s; }
+.d5 { --dd: 0.24s; }
+.d6 { --dd: 0.30s; }
+
+/* Flat fills only: sunny yellow, violet, pale lilac. */
+.fill-sun { fill: var(--sun); }
+.fill-violet { fill: var(--violet); }
+.fill-lilac { fill: var(--lilac); }
+.fill-paper { fill: var(--panel-solid); }
+
+/* ---------- Placement, one class per place ----------
+   Each place is chosen where the column of text is measurably shorter than
+   the space available, and each one switches itself off at the width where
+   that stops being true. A sticker never sits on words. */
+
+/* Beside a section heading capped at 52ch — free to 900px. */
+.sticker--head { top: -16px; right: 0; --w: 104px; --tilt: 8deg; }
+@media (max-width: 899px) { .sticker--head { display: none; } }
+
+/* On the corners of the studio mock — free to 980px. */
+.sticker--mock-a { top: -24px; left: -30px; --w: 112px; --tilt: -11deg; }
+.sticker--mock-b { bottom: -26px; right: -20px; --w: 88px; --tilt: 8deg; }
+@media (max-width: 979px) { .sticker--mock-a, .sticker--mock-b { display: none; } }
+
+/* In the hero's empty side column, below the launch panel. */
+.sticker--hero-side { bottom: -18px; right: -6px; --w: 130px; --tilt: 9deg; }
+@media (max-width: 1199px) { .sticker--hero-side { display: none; } }
+
+/* Page-mast art, out in the margin band beside the shell. */
+.sticker--mast-a { top: 4%; left: -112px; --w: 112px; --tilt: -8deg; }
+.sticker--mast-b { bottom: -30px; right: -104px; --w: 104px; --tilt: 7deg; }
+.sticker--gap { top: 12%; right: 3%; --w: 138px; --tilt: 9deg; }
+@media (max-width: 1199px) {
+  .sticker--mast-a,
+  .sticker--mast-b,
+  .sticker--gap { display: none; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .sticker__body { opacity: 1; transform: none; transition: none; }
+  .doodle .blob { opacity: 1; transform: none; transition: none; }
+  .doodle [data-draw] { stroke-dashoffset: 0; transition: none; }
+  .sticker__drift { transform: none; }
+  .doodle { transform: rotate(0deg); transition: none; }
+}
+
+/* Product art on the shop page draws with its card, not with a scroll trigger. */
+.good__art .doodle { width: 100%; height: 100%; }
+.no-js .good__art .doodle [data-draw] { stroke-dashoffset: 0; }

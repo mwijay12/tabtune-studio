@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en" class="no-js" data-mode="night" data-theme="night">
+<head>
+{{> head}}
+</head>
+<body>
+
+{{> icons}}
+{{> field}}
+{{> scroll-progress}}
+{{> header}}
+
+<main id="main" class="page">
+
+  <section class="pagemast" data-sec="night" aria-labelledby="shop-title">
+    <div class="shell">
+      <p class="eyebrow">{{shop.eyebrow}}</p>
+      <h1 id="shop-title" style="margin-top:1rem">{{shop.headline}}</h1>
+      <p class="lede">{{shop.sub}}</p>
+      <p class="shopnote" style="margin-top:1.75rem">
+        <svg class="ico" aria-hidden="true"><use href="#i-info"/></svg>
+        <span>{{shop.orderNote}}</span>
+      </p>
+      <div class="sticker sticker--mast-a" aria-hidden="true">{{> art/sticker-bag}}</div>
+      <div class="sticker sticker--mast-b" aria-hidden="true">{{> art/sticker-gem}}</div>
+    </div>
+  </section>
+
+  <section class="section" data-sec="day" style="padding-top:clamp(1rem,3vw,2rem)" aria-label="Products">
+    <div class="shell">
+      <div class="grid goods">
+        {{#shop.items}}
+        <article class="good reveal" id="{{id}}" style="--reveal-delay:{{revealDelay}}ms">
+          {{?tag}}<span class="good__tag">{{tag}}</span>{{/tag}}
+          <div class="good__art" aria-hidden="true">{{> art/sticker-{{art}}}}</div>
+          <h3>{{name}}</h3>
+          <p class="good__blurb">{{blurb}}</p>
+          <ul class="good__bullets">
+            {{#bullets}}
+            <li>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><use href="#i-check"/></svg>
+              <span>{{this}}</span>
+            </li>
+            {{/bullets}}
+          </ul>
+          <div class="good__foot">
+            <p class="good__price">
+              {{price}}
+              <small class="good__pricenote">{{priceNote}}</small>
+            </p>
+            <a class="btn btn--sm" href="https://wa.me/{{../contact.whatsapp}}?text=Salamu%20—%20I%20would%20like%20to%20reserve%20{{name}}%20({{price}}).">
+              <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"/></svg>
+              Reserve
+            </a>
+          </div>
+        </article>
+        {{/shop.items}}
+      </div>
+    </div>
+  </section>
+
+  <section class="section" data-sec="night" aria-labelledby="howto-title">
+    <div class="shell">
+      <div class="sechead reveal">
+        <p class="eyebrow">Ordering</p>
+        <h2 id="howto-title">Three steps, no card on this page</h2>
+      </div>
+      <div class="grid howto">
+        <div class="reveal">
+          <b>1</b>
+          <h4>Send a message</h4>
+          <p>Tap Reserve on anything. It opens WhatsApp with the item and the price already written in the message.</p>
+        </div>
+        <div class="reveal" style="--reveal-delay:80ms">
+          <b>2</b>
+          <h4>Confirm on WhatsApp</h4>
+          <p>We reply with the total, how to pay, and when the item is ready. Nothing is charged here.</p>
+        </div>
+        <div class="reveal" style="--reveal-delay:160ms">
+          <b>3</b>
+          <h4>Collect or receive</h4>
+          <p>Digital items arrive as a link. Physical items are collected in Dar es Salaam or delivered within the city.</p>
+        </div>
+      </div>
+
+      <p class="muted" style="margin-top:1.75rem;font-size:var(--step--1);max-width:62ch">
+        Prices on this page are placeholders sitting in <span class="mono">site/content/site.json</span>. Replace them with the real figures before the shop opens.
+      </p>
+    </div>
+  </section>
+
+</main>
+
+{{> footer}}
+
+<script type="module" src="/assets/js/site.js"></script>
+</body>
+</html>

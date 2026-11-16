@@ -1,0 +1,24 @@
+{
+  "name": "tabtune-studio-site",
+  "version": "1.2.0",
+  "private": true,
+  "description": "Marketing site for the TabTune Studio browser extension.",
+  "type": "module",
+  "scripts": {
+    "build": "node build.mjs",
+    "strict": "node build.mjs --strict",
+    "dev": "node build.mjs && node tools/serve.mjs",
+    "serve": "node tools/serve.mjs",
+    "fonts": "node tools/fonts.mjs",
+    "icons": "node tools/icons.mjs",
+    "check": "node tools/check.mjs",
+    "verify": "node build.mjs && node tools/check.mjs"
+  },
+  "devDependencies": {
+    "@resvg/resvg-js": "^2.6.2",
+    "wawoff2": "^2.0.1"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

@@ -1,0 +1,54 @@
+/* ============================================================
+   The studio mock — a drawing of the extension panel.
+   Product colours (cyan, navy karaoke, red REC) are fixed here:
+   this is a picture of the product, not page chrome.
+   ============================================================ */
+
+.mockwrap {
+  position: relative;
+  border-radius: var(--r-xl);
+  filter: drop-shadow(0 40px 70px rgba(0, 0, 0, 0.45));
+}
+@media (prefers-color-scheme: light) {
+  html[data-theme='day'] .mockwrap { filter: drop-shadow(0 30px 60px rgba(11, 18, 51, 0.22)); }
+  html[data-mode='mix'] .mockwrap { filter: drop-shadow(0 30px 60px rgba(11, 18, 51, 0.28)); }
+}
+
+.mock { width: 100%; height: auto; display: block; }
+.mock text { font-family: var(--font-sans); }
+
+.mock .m-panel { fill: var(--panel-solid); stroke: var(--line-strong); stroke-width: 1.5; }
+.mock .m-card { fill: var(--panel); stroke: var(--line); stroke-width: 1.2; }
+.mock .m-well { fill: color-mix(in srgb, var(--ink) 7%, transparent); }
+.mock .m-row { fill: color-mix(in srgb, var(--ink) 5%, transparent); stroke: var(--line); stroke-width: 1; }
+.mock .m-btn { fill: color-mix(in srgb, var(--ink) 9%, transparent); stroke: var(--line); stroke-width: 1; }
+.mock .m-chip { fill: var(--accent-soft); }
+.mock .m-pill { fill: var(--panel-solid); stroke: var(--line); stroke-width: 1; }
+.mock .m-track { fill: color-mix(in srgb, var(--ink) 15%, transparent); }
+.mock .m-check { fill: var(--accent-soft); stroke: var(--accent); stroke-width: 1.2; }
+.mock .m-checkmark { stroke: var(--accent); stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+.mock .m-dim { fill: color-mix(in srgb, var(--ink) 24%, transparent); }
+.mock .m-stroke { stroke: var(--ink-soft); stroke-width: 1.7; stroke-linecap: round; stroke-linejoin: round; fill: none; }
+
+.mock .m-ink { fill: var(--ink); }
+.mock .m-soft { fill: var(--ink-soft); }
+.mock .m-faint { fill: var(--ink-faint); }
+.mock .m-accent { fill: var(--accent); }
+.mock .m-onred { fill: #ffffff; }
+.mock .m-onblue { fill: #ffffff; }
+
+.mock .m-kara-title { fill: #eaf0ff; }
+.mock .m-kara-line { fill: #7d8fb5; }
+.mock .m-kara-faint { fill: #6b7fa6; }
+.mock .m-kara-hot { fill: #38bdf8; }
+.mock .m-kara-active { fill: rgba(56, 189, 248, 0.16); }
+
+/* The room is alive, but only if motion is welcome. */
+@media (prefers-reduced-motion: no-preference) {
+  .mock .m-kara-active { animation: kara-glow 3.2s var(--ease) infinite; }
+  .mock .m-pulse { animation: kara-glow 2.4s var(--ease) infinite; }
+}
+@keyframes kara-glow {
+  0%, 100% { opacity: 0.55; }
+  50% { opacity: 1; }
+}

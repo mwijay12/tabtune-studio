@@ -1,0 +1,40 @@
+<footer class="footer">
+  <div class="shell">
+    <div class="footer__grid">
+      <div>
+        <a class="mark" href="/" aria-label="{{site.name}} — home">
+          {{> mark}}
+          <span class="mark__text">{{site.shortName}} <em>Studio</em></span>
+        </a>
+        <p class="muted" style="margin-top:.9rem;max-width:34ch;font-size:var(--step--1)">
+          {{site.description}}
+        </p>
+      </div>
+
+      <div>
+        <h5>The studio</h5>
+        <ul>
+          {{#nav}}<li><a href="{{href}}">{{label}}</a></li>{{/nav}}
+        </ul>
+      </div>
+
+      <div>
+        <h5>Elsewhere</h5>
+        <ul>
+          <li><a href="{{site.authorUrl}}" rel="me noopener">GitHub — {{site.authorHandle}}</a></li>
+          <li><a href="https://github.com/mwijay12/tabtune-studio">Source and install notes</a></li>
+          <li><a href="https://lrclib.net/" rel="noopener">LRCLIB, the lyric database</a></li>
+          <li><a href="https://aistudio.google.com/apikey" rel="noopener">Google AI Studio — make a key</a></li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="footer__meta">
+      <span>© 2026 {{site.author}}. {{site.madeIn}}.</span>
+      <span>Manifest V3 · Chrome {{site.chromeMin}}+ · v{{site.version}}</span>
+    </div>
+    <p class="footer__note muted" style="font-size:var(--step--1)">
+      Contact details on this site are placeholders until they are replaced in <span class="mono">site/content/site.json</span>.
+    </p>
+  </div>
+</footer>

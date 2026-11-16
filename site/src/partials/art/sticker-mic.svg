@@ -1,0 +1,8 @@
+<svg class="doodle" viewBox="0 0 100 100" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+  <g class="blob"><path class="fill-lilac" d="M52,6 C72,8 86,22 88,42 C90,62 80,76 70,86 C60,95 44,97 32,90 C19,82 8,68 8,50 C8,32 18,16 32,10 C39,7 45,5 52,6 Z" transform="rotate(6 50 50)"/></g>
+  <path class="ink d1" data-draw pathLength="1" d="M50,20 C57,20 61,26 61,35 L61,50 C61,60 57,66 50,66 C43,66 39,60 39,50 L39,35 C39,26 43,20 50,20 Z"/>
+  <path class="ink d2" data-draw pathLength="1" d="M31,47 C31,62 39,71 50,71 C61,71 69,62 69,47"/>
+  <path class="ink d3" data-draw pathLength="1" d="M50,71 L50,80"/>
+  <path class="ink d4" data-draw pathLength="1" d="M40,82 L60,82"/>
+  <path class="ink ink--fill d5" d="M22,24 C23,30 25,32 31,33 C25,34 23,36 22,42 C21,36 19,34 13,33 C19,32 21,30 22,24 Z"/>
+</svg>

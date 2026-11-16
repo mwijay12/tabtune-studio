@@ -1,0 +1,42 @@
+<a class="skip" href="#main">Skip to content</a>
+
+<header class="masthead" data-masthead>
+  <div class="masthead__in">
+    <a class="mark" href="/" aria-label="{{site.name}} — home">
+      {{> mark}}
+      <span class="mark__text">{{site.shortName}} <em>Studio</em></span>
+    </a>
+
+    <nav class="nav" aria-label="Main">
+      {{#nav}}<a class="nav__link" id="nav-{{id}}" href="{{href}}">{{label}}</a>{{/nav}}
+    </nav>
+
+    <div class="themes" role="group" aria-label="Colour mode">
+      <button type="button" data-mode-set="night" aria-pressed="true">Night</button>
+      <button type="button" data-mode-set="mix" aria-pressed="false">Mix</button>
+      <button type="button" data-mode-set="day" aria-pressed="false">Day</button>
+    </div>
+
+    <a class="btn btn--sm btn--cta" href="/coming-soon/">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 4v11m0 0 4-4m-4 4-4-4M5 19h14"/></svg>
+      Get the extension
+    </a>
+
+    <button class="menu-btn" type="button" data-menu-open aria-expanded="false" aria-controls="sheet" aria-label="Open menu">
+      <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M4 7h16M4 12h16M4 17h16"/></svg>
+    </button>
+  </div>
+</header>
+
+<div class="sheet" id="sheet" data-sheet hidden>
+  {{#nav}}<a href="{{href}}">{{label}}</a>{{/nav}}
+  <div class="themes" role="group" aria-label="Colour mode">
+    <button type="button" data-mode-set="night" aria-pressed="true">Night</button>
+    <button type="button" data-mode-set="mix" aria-pressed="false">Mix</button>
+    <button type="button" data-mode-set="day" aria-pressed="false">Day</button>
+  </div>
+  <a class="btn" href="/coming-soon/">
+    <svg class="ico" viewBox="0 0 24 24" aria-hidden="true" focusable="false"><path d="M12 4v11m0 0 4-4m-4 4-4-4M5 19h14"/></svg>
+    Get the extension
+  </a>
+</div>

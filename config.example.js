@@ -9,7 +9,7 @@
  *    chrome.storage.local and then you can DELETE config.js again if you want.
  *
  * Why? So you can `git push` to GitHub without leaking precious API keys.
- * Keys entered in ⚙ Settings are ALSO stored only in the browser
+ * Keys entered in the settings panel are ALSO stored only in the browser
  * (chrome.storage.local) — never in the repo.
  */
 const LOCAL_GEMINI_KEYS = [
