@@ -46,9 +46,18 @@
     </p>
     <p class="footer__note muted" style="font-size:var(--step--1)">{{contact.note}}</p>
 
-    <a class="credit" href="{{site.authorSite}}" target="_blank" rel="noopener">
-      <span class="credit__logo" aria-hidden="true"></span>
-      <span class="credit__text">An <strong>{{site.author}}</strong> build &middot; {{site.authorSiteLabel}}</span>
-    </a>
+    <div class="credit">
+      <a class="credit__mark" href="{{site.authorSite}}" target="_blank" rel="noopener">
+        <span class="credit__logo" aria-hidden="true"></span>
+        <span class="credit__name">{{site.author}}</span>
+      </a>
+      <p class="credit__tagline">{{site.authorTagline}}</p>
+      <p class="credit__blurb">{{site.authorBlurb}}</p>
+      <p class="credit__links">
+        <a href="{{site.authorSite}}" target="_blank" rel="noopener">{{site.authorSiteLabel}}</a>
+        <span aria-hidden="true">&middot;</span>
+        <a href="{{site.authorStart}}" target="_blank" rel="noopener">Start a project</a>
+      </p>
+    </div>
   </div>
 </footer>
