@@ -85,12 +85,16 @@
         {{/comingSoon.installSteps}}
       </ol>
 
-      <p style="margin-top:1.75rem">
-        <a class="btn" href="{{site.authorUrl}}/tabtune-studio">
+      <div class="notify" style="margin-top:1.75rem">
+        <a class="btn" href="/download/tabtune-studio-{{site.version}}.zip" download>
+          <svg class="ico" aria-hidden="true"><use href="#i-download"/></svg>
+          Download the .zip
+        </a>
+        <a class="btn btn--ghost" href="{{site.authorUrl}}/tabtune-studio" rel="noopener">
           <svg class="ico" aria-hidden="true"><use href="#i-github"/></svg>
           Open the repository
         </a>
-      </p>
+      </div>
     </div>
   </section>
 
