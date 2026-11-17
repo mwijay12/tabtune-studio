@@ -166,6 +166,17 @@
 }
 .install__after strong { color: var(--ink); font-weight: 700; }
 
+.install__help { margin-top: 1.5rem; }
+.install__help a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: var(--step--1);
+  font-weight: 650;
+  color: var(--accent);
+}
+.install__help .ico { width: 18px; height: 18px; }
+
 /* ---------- Requirements ---------- */
 
 .req {

@@ -6,13 +6,15 @@
     "tagline": "Record any tab. Transcribe the lyrics. Ship the song.",
     "description": "A Manifest V3 browser extension that captures tab audio, transcribes it with Gemini AI into synced .lrc lyrics, and exports a tidy studio bundle — built for Swahili, Sheng and English.",
     "url": "https://tabtune.studio",
-    "author": "Altraware Technologies",
+    "author": "Altraware Technology",
     "authorHandle": "github.com/mwijay12",
     "authorUrl": "https://github.com/mwijay12",
     "madeIn": "Dar es Salaam, Tanzania",
     "chromeMin": "116",
     "ogLine": "Record any tab. Transcribe the lyrics.",
-    "ogKicker": "Manifest V3 · Chrome 116+"
+    "ogKicker": "Manifest V3 · Chrome 116+",
+    "authorSite": "https://altra.tanzaniareach.com",
+    "authorSiteLabel": "altra.tanzaniareach.com"
   },
   "pages": {
     "index": {
@@ -352,10 +354,10 @@
     ]
   },
   "contact": {
-    "whatsapp": "255000000000",
-    "whatsappDisplay": "+255 000 000 000",
+    "whatsapp": "255790942616",
+    "whatsappDisplay": "+255 790 942 616",
     "email": "hello@tabtune.studio",
-    "note": "PLACEHOLDER — replace with the real WhatsApp number and email before publishing."
+    "note": "WhatsApp is the quickest way to reach us, and usually gets an answer the same day."
   },
   "comingSoon": {
     "eyebrow": "Chrome Web Store · in review",

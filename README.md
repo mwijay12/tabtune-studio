@@ -180,4 +180,6 @@ Any static host does the same thing: run the build, publish `dist/`. The only th
 
 ## Licence
 
-Proprietary to Altraware Technologies. See `LICENSE`.
+Proprietary to **Altraware Technology** — <https://altra.tanzaniareach.com>. See `LICENSE`.
+
+Reach us on WhatsApp at **+255 790 942 616**, or by email at `hello@tabtune.studio`.
