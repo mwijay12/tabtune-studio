@@ -1,0 +1,378 @@
+/* ------------------------------------------------------------------ *
+ * Install, permissions and pricing
+ *
+ * The download is the point of the page, so the button is the biggest
+ * thing in the section and nothing decorative sits near it.
+ * ------------------------------------------------------------------ */
+
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ---------- Download ---------- */
+
+.install__grid {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: clamp(1.5rem, 3.5vw, 3rem);
+  align-items: start;
+  margin-top: clamp(2rem, 4vw, 3.25rem);
+}
+
+.install__box {
+  display: grid;
+  justify-items: center;
+  text-align: center;
+  gap: 0.9rem;
+}
+
+.btn--big {
+  width: 100%;
+  padding: 1.05rem 1.6rem;
+  font-size: var(--step-1);
+  box-shadow: var(--shadow-lift);
+}
+.btn--big .ico { width: 1.15em; height: 1.15em; }
+.btn--big:hover { transform: translateY(-2px); }
+
+.install__note {
+  font-size: var(--step--1);
+  color: var(--ink-faint);
+  letter-spacing: 0.01em;
+}
+
+.install__alt {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-wrap: wrap;
+  justify-content: center;
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+
+.install__store {
+  display: flex;
+  gap: 0.6rem;
+  align-items: flex-start;
+  text-align: left;
+  margin-top: 0.4rem;
+  padding-top: 1rem;
+  border-top: 1px solid var(--line);
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+.install__store .ico {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+  margin-top: 0.15rem;
+}
+
+/* ---------- Three moves ---------- */
+
+.isteps {
+  display: grid;
+  gap: clamp(1rem, 2vw, 1.4rem);
+  list-style: none;
+}
+
+.istep {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 1rem;
+  align-items: start;
+  padding: 1.05rem 1.15rem;
+  background: var(--panel-2);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  transition: border-color 0.4s var(--ease);
+}
+.istep:hover { border-color: var(--line-strong); }
+
+.istep__ico {
+  width: 42px;
+  height: 42px;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--accent-soft);
+  color: var(--accent);
+  border: 1px solid var(--line);
+}
+.istep__ico .ico { width: 21px; height: 21px; }
+
+.istep h3 {
+  font-family: var(--font-sans);
+  font-size: var(--step-1);
+  font-weight: 730;
+  letter-spacing: -0.01em;
+  display: flex;
+  align-items: baseline;
+  gap: 0.55rem;
+}
+
+.istep__n {
+  font-size: var(--step--1);
+  font-weight: 700;
+  color: var(--accent);
+  opacity: 0.85;
+}
+
+.istep p {
+  margin-top: 0.4rem;
+  font-size: var(--step-0);
+  color: var(--ink-soft);
+  line-height: 1.6;
+  max-width: 52ch;
+}
+
+.install__after-title {
+  font-family: var(--font-sans);
+  font-size: var(--step-0);
+  font-weight: 720;
+  margin-top: clamp(1.4rem, 3vw, 2rem);
+  margin-bottom: 0.8rem;
+}
+
+.install__after {
+  display: grid;
+  gap: 0.85rem;
+  list-style: none;
+}
+.install__after li {
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  gap: 0.75rem;
+  align-items: start;
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+.install__after svg {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+  margin-top: 0.2rem;
+}
+.install__after strong { color: var(--ink); font-weight: 700; }
+
+/* ---------- Requirements ---------- */
+
+.req {
+  margin-top: clamp(1.75rem, 3.5vw, 2.75rem);
+  padding: clamp(1.15rem, 2.4vw, 1.75rem);
+  border: 1px dashed var(--line-strong);
+  border-radius: var(--r-lg);
+}
+
+.req__title {
+  font-family: var(--font-mono);
+  font-size: 0.72rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  font-weight: 600;
+  margin-bottom: 1rem;
+}
+
+.req__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+  gap: 1.1rem 1.75rem;
+}
+.req__grid dt {
+  font-family: var(--font-sans);
+  font-weight: 700;
+  font-size: var(--step--1);
+  color: var(--ink);
+}
+.req__grid dd {
+  margin: 0.3rem 0 0;
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+  line-height: 1.55;
+}
+
+/* ---------- Permissions ---------- */
+
+.perms {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 0.85rem;
+  margin-top: clamp(2rem, 4vw, 3rem);
+  list-style: none;
+}
+
+.perm {
+  display: grid;
+  gap: 0.35rem;
+  padding: 1rem 1.1rem;
+  background: var(--panel);
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+}
+
+.perm code {
+  font-family: var(--font-mono);
+  font-size: var(--step--1);
+  color: var(--accent);
+  word-break: break-word;
+}
+
+.perm span {
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+  line-height: 1.6;
+}
+
+.perms__foot {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  margin-top: 1.5rem;
+  font-size: var(--step-0);
+  color: var(--ink-soft);
+  line-height: 1.6;
+  max-width: 62ch;
+}
+.perms__foot .ico {
+  width: 20px;
+  height: 20px;
+  color: var(--accent);
+  margin-top: 0.2rem;
+}
+
+/* ---------- Pricing ---------- */
+
+.plans {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  overflow-x: auto;
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  background: var(--panel);
+  backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(150%);
+}
+
+.plans__table {
+  width: 100%;
+  min-width: 540px;
+  border-collapse: collapse;
+  text-align: left;
+}
+
+.plans__table th,
+.plans__table td {
+  padding: 0.9rem 1.1rem;
+  border-bottom: 1px solid var(--line);
+  vertical-align: top;
+}
+.plans__table tbody tr:last-child th,
+.plans__table tbody tr:last-child td { border-bottom: 0; }
+
+.plans__table thead th {
+  font-weight: 600;
+  padding-top: 1.15rem;
+  padding-bottom: 1.15rem;
+}
+.plans__table thead th:first-child {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  vertical-align: bottom;
+}
+
+.plans__name {
+  display: block;
+  font-family: var(--font-display);
+  font-size: var(--step-2);
+  font-weight: 650;
+  line-height: 1.1;
+  color: var(--ink);
+}
+.plans__price {
+  display: block;
+  margin-top: 0.3rem;
+  font-family: var(--font-mono);
+  font-size: var(--step-0);
+  font-weight: 700;
+  color: var(--accent);
+}
+.plans__meta {
+  display: block;
+  margin-top: 0.35rem;
+  font-size: var(--step--1);
+  font-weight: 500;
+  color: var(--ink-faint);
+  line-height: 1.5;
+  max-width: 26ch;
+}
+
+.plans__pro {
+  background: var(--accent-soft);
+  border-left: 1px solid var(--line);
+}
+.plans__table tbody td:nth-child(3) {
+  background: var(--accent-soft);
+  border-left: 1px solid var(--line);
+  color: var(--ink);
+}
+
+.plans__table tbody th {
+  font-family: var(--font-sans);
+  font-weight: 600;
+  font-size: var(--step-0);
+  color: var(--ink);
+}
+.plans__table tbody td {
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+}
+.plans__table tbody td:first-of-type { color: var(--ink-soft); }
+
+.plans__note {
+  display: flex;
+  gap: 0.65rem;
+  align-items: flex-start;
+  margin-top: 1.5rem;
+  font-size: var(--step--1);
+  color: var(--ink-soft);
+  line-height: 1.6;
+  max-width: 66ch;
+}
+.plans__note .ico {
+  width: 18px;
+  height: 18px;
+  color: var(--accent);
+  margin-top: 0.15rem;
+}
+
+/* ---------- Narrow screens ---------- */
+
+@media (max-width: 900px) {
+  .install__grid { grid-template-columns: minmax(0, 1fr); }
+  .install__box { order: -1; }
+  .btn--big { width: 100%; }
+}
+
+@media (max-width: 560px) {
+  .istep { padding: 0.9rem; gap: 0.8rem; }
+  .istep__ico { width: 36px; height: 36px; }
+  .istep__ico .ico { width: 18px; height: 18px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .btn--big:hover { transform: none; }
+}

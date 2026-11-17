@@ -55,9 +55,9 @@
           <span class="muted" style="font-size:var(--step--1);text-align:right">{{launch.progressLabel}}</span>
         </p>
 
-        <a class="btn btn--sm" href="/coming-soon/" style="width:100%;margin-top:1.15rem">
-          <svg class="ico" aria-hidden="true"><use href="#i-bolt"/></svg>
-          Load it unpacked today
+        <a class="btn btn--sm" href="#install" style="width:100%;margin-top:1.15rem">
+          <svg class="ico" aria-hidden="true"><use href="#i-download"/></svg>
+          Download it now
         </a>
       </aside>
       <div class="sticker sticker--hero-side" aria-hidden="true">{{> art/sticker-wave}}</div>
@@ -178,6 +178,86 @@
     </div>
   </section>
 
+  <!-- ============ Install ============ -->
+  <section class="section" id="install" data-sec="day" aria-labelledby="install-title">
+    <div class="shell">
+      <div class="sechead-row">
+        <div class="sechead reveal">
+          <p class="eyebrow">{{install.eyebrow}}</p>
+          <h2 id="install-title">{{install.title}}</h2>
+          <p class="lede">{{install.sub}}</p>
+        </div>
+        <div class="sticker sticker--head" aria-hidden="true">{{> art/sticker-bag}}</div>
+      </div>
+
+      <div class="install__grid">
+        <div class="panel panel--pad install__box reveal">
+          {{?install.storeUrl}}
+          <a class="btn btn--big" href="{{install.storeUrl}}" target="_blank" rel="noopener">
+            <svg class="ico" aria-hidden="true"><use href="#i-download"/></svg>
+            {{install.storeCta}}
+          </a>
+          {{/install.storeUrl}}
+          {{^install.storeUrl}}
+          <a class="btn btn--big" href="/download/tabtune-studio-{{site.version}}.zip" download>
+            <svg class="ico" aria-hidden="true"><use href="#i-download"/></svg>
+            {{install.cta}}
+          </a>
+          {{/install.storeUrl}}
+
+          <p class="install__note mono">{{install.fileNote}}</p>
+
+          <p class="install__alt">
+            <a href="/download/tabtune-studio.zip" download>Always-latest zip</a>
+            <span aria-hidden="true">·</span>
+            <a href="https://github.com/mwijay12/tabtune-studio" rel="noopener">Source and release notes</a>
+          </p>
+
+          <p class="install__store">
+            <svg class="ico" aria-hidden="true"><use href="#i-info"/></svg>
+            <span>{{install.storeNote}}</span>
+          </p>
+        </div>
+
+        <div>
+          <ol class="isteps">
+            {{#install.steps}}
+            <li class="istep reveal" style="--reveal-delay:{{revealDelay}}ms">
+              <span class="istep__ico"><svg class="ico" aria-hidden="true"><use href="#i-{{icon}}"/></svg></span>
+              <div>
+                <h3><span class="istep__n mono">{{n}}</span>{{title}}</h3>
+                <p>{{body}}</p>
+              </div>
+            </li>
+            {{/install.steps}}
+          </ol>
+
+          <h4 class="install__after-title">{{install.afterTitle}}</h4>
+          <ul class="install__after">
+            {{#install.after}}
+            <li>
+              <svg aria-hidden="true"><use href="#i-{{icon}}"/></svg>
+              <span><strong>{{label}}</strong> {{body}}</span>
+            </li>
+            {{/install.after}}
+          </ul>
+        </div>
+      </div>
+
+      <div class="req">
+        <h4 class="req__title">{{install.requirementsTitle}}</h4>
+        <dl class="req__grid">
+          {{#install.requirements}}
+          <div>
+            <dt>{{label}}</dt>
+            <dd>{{value}}</dd>
+          </div>
+          {{/install.requirements}}
+        </dl>
+      </div>
+    </div>
+  </section>
+
   <!-- ============ Shortcuts ============ -->
   <section class="section" id="shortcuts" data-sec="night" aria-labelledby="keys-title">
     <div class="shell">
@@ -198,6 +278,77 @@
         </li>
         {{/shortcuts}}
       </ul>
+    </div>
+  </section>
+
+  <!-- ============ Permissions ============ -->
+  <section class="section" id="permissions" data-sec="night" aria-labelledby="perms-title">
+    <div class="shell">
+      <div class="sechead reveal">
+        <p class="eyebrow">{{permissions.eyebrow}}</p>
+        <h2 id="perms-title">{{permissions.title}}</h2>
+        <p class="lede">{{permissions.body}}</p>
+      </div>
+
+      <ul class="perms">
+        {{#permissions.items}}
+        <li class="perm reveal" style="--reveal-delay:{{revealDelay}}ms">
+          <code>{{perm}}</code>
+          <span>{{why}}</span>
+        </li>
+        {{/permissions.items}}
+      </ul>
+
+      <p class="perms__foot">
+        <svg class="ico" aria-hidden="true"><use href="#i-shield"/></svg>
+        <span>{{permissions.footnote}}</span>
+      </p>
+    </div>
+  </section>
+
+  <!-- ============ Pricing ============ -->
+  <section class="section" id="pricing" data-sec="day" aria-labelledby="plans-title">
+    <div class="shell">
+      <div class="sechead reveal">
+        <p class="eyebrow">{{plans.eyebrow}}</p>
+        <h2 id="plans-title">{{plans.title}}</h2>
+        <p class="lede">{{plans.sub}}</p>
+      </div>
+
+      <div class="plans reveal" style="--reveal-delay:100ms">
+        <table class="plans__table">
+          <caption class="sr-only">What is free today and what is planned for Pro</caption>
+          <thead>
+            <tr>
+              <th scope="col">Feature</th>
+              <th scope="col">
+                <span class="plans__name">{{plans.freeLabel}}</span>
+                <span class="plans__price">{{plans.freePrice}}</span>
+                <span class="plans__meta">{{plans.freeNote}}</span>
+              </th>
+              <th scope="col" class="plans__pro">
+                <span class="plans__name">{{plans.proLabel}}</span>
+                <span class="plans__price">{{plans.proPrice}}</span>
+                <span class="plans__meta">{{plans.proNote}}</span>
+              </th>
+            </tr>
+          </thead>
+          <tbody>
+            {{#plans.rows}}
+            <tr>
+              <th scope="row">{{feature}}</th>
+              <td>{{free}}</td>
+              <td>{{pro}}</td>
+            </tr>
+            {{/plans.rows}}
+          </tbody>
+        </table>
+      </div>
+
+      <p class="plans__note">
+        <svg class="ico" aria-hidden="true"><use href="#i-info"/></svg>
+        <span>{{plans.note}}</span>
+      </p>
     </div>
   </section>
 
@@ -262,11 +413,11 @@
       <div class="panel panel--pad cta__panel reveal">
         <p class="eyebrow" style="justify-content:center">Free while the listing is reviewed</p>
         <h2 id="cta-title" style="margin-top:1rem">{{hero.headline}}</h2>
-        <p class="lede">Load it unpacked in about thirty seconds, or leave a line and the Web Store link arrives the hour it goes live.</p>
+        <p class="lede">Download it and drop it into Chrome in about thirty seconds, or leave a line and the Web Store link arrives the hour it goes live.</p>
         <div class="cta__actions">
-          <a class="btn" href="/coming-soon/">
+          <a class="btn" href="#install">
             <svg class="ico" aria-hidden="true"><use href="#i-download"/></svg>
-            Install now, unpacked
+            Download the extension
           </a>
           <a class="btn btn--ghost" href="/shop/">
             Browse the shop

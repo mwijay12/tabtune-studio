@@ -186,6 +186,7 @@ const STYLE_ORDER = [
   'stickers.css',
   'mock.css',
   'home.css',
+  'install.css',
   'soon.css',
   'shop.css'
 ];
@@ -263,6 +264,16 @@ try {
   notes.push(`icons: not rasterised — ${err.message}`);
 }
 
+// the extension, packed for download. A failure here is a failure: the
+// download button would hand out a 404, so say so instead of shipping it.
+let packed = null;
+try {
+  const pkg = await import('./tools/package.mjs');
+  packed = await pkg.writePackage(root, content);
+} catch (err) {
+  problems.push(`extension not packed — ${err.message}`);
+}
+
 /* ------------------------------------------------------------------ *
  * Report
  * ------------------------------------------------------------------ */
@@ -271,7 +282,8 @@ console.log(`\n  built  dist/ — ${built} pages, ${STYLE_ORDER.length} styleshe
 
 for (const [f, label] of [
   ['assets/site.css', 'css'],
-  ['favicon.svg', 'favicon']
+  ['favicon.svg', 'favicon'],
+  ['download/tabtune-studio.zip', 'download']
 ]) {
   if (fs.existsSync(out(f))) {
     console.log(`  ${label.padEnd(8)} ${(fs.statSync(out(f)).size / 1024).toFixed(1)} kB`);

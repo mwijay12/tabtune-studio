@@ -26,11 +26,49 @@ Two things live in this repository:
 
 ### Install
 
+Two ways in. Chrome stopped letting websites install extensions, so the
+one-click version only exists once the Web Store listing is live.
+
+**Download the zip** — the one on the site, and the one to hand to anybody
+who just wants to use it:
+
+1. Download `tabtune-studio.zip` from <https://tabtune-studio.vercel.app/#install>
+   (the **Install** section, or the link in the footer).
+2. Unzip it. You get one folder, `tabtune-studio`. **Leave it where it
+   lands** — Chrome reads the files from there every time it starts, so
+   deleting the folder turns the extension off.
+3. Open `chrome://extensions`, switch on **Developer mode**, and drag the
+   folder onto that page. Chrome installs it on drop; there is no dialog.
+4. Pin TabTune Studio to the toolbar.
+
+**Or load it from a clone** — for working on the code:
+
 1. Open `chrome://extensions` and switch on **Developer mode**.
 2. Click **Load unpacked** and pick this folder.
 3. Pin TabTune Studio to the toolbar.
 
 Works on Chrome, Edge, Brave and Opera, version 116 or newer.
+
+### Packing the download
+
+`npm run build` in `site/` writes the zip the site serves, into
+`site/dist/download/`:
+
+```bash
+cd site
+npm run build          # … also writes dist/download/tabtune-studio.zip
+node tools/package.mjs # or just the zip on its own
+```
+
+Two files come out: `tabtune-studio.zip` (always the newest) and
+`tabtune-studio-<version>.zip` (pinned, for a release or a store upload).
+
+`tools/package.mjs` works out what to include by reading `manifest.json`
+and then following what those files themselves load, so a new script
+cannot be quietly left out of the download. It refuses to pack
+`config.js`, refuses to build if a referenced file is missing, and fails
+loudly if `manifest.json` and `site.json` disagree about the version. The
+same zip is what gets uploaded to the Chrome Web Store.
 
 ### Gemini keys
 
