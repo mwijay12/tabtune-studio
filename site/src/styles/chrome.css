@@ -236,6 +236,50 @@
 }
 .footer__note { display: block; margin-top: 0.6rem; max-width: 60ch; }
 
+.footer__contact {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.55rem 1.5rem;
+  margin-top: 1.1rem;
+}
+.footer__contact a {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+  font-size: var(--step--1);
+  font-weight: 650;
+  letter-spacing: -0.005em;
+}
+.footer__contact .ico { width: 17px; height: 17px; color: var(--accent); }
+
+.credit {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-top: 1.35rem;
+  padding-top: 1.15rem;
+  border-top: 1px solid var(--line);
+  color: var(--ink);
+}
+.credit__logo {
+  width: 66px;
+  aspect-ratio: 252 / 176;
+  flex: none;
+  background: currentColor;
+  -webkit-mask: url(/altraware.png) center / contain no-repeat;
+  mask: url(/altraware.png) center / contain no-repeat;
+  transition: opacity 0.3s var(--ease);
+}
+.credit__text { font-size: var(--step--1); color: var(--ink-soft); line-height: 1.5; }
+.credit__text strong { color: var(--ink); font-weight: 700; }
+.credit:hover .credit__text strong { color: var(--accent); }
+
+/* Without mask support the mark would render as a solid block, which is
+   worse than no mark — the company name is right beside it anyway. */
+@supports not ((-webkit-mask-image: url(/altraware.png)) or (mask-image: url(/altraware.png))) {
+  .credit__logo { display: none; }
+}
+
 /* ---------- Page masthead (inner pages) ---------- */
 .pagemast {
   position: relative;

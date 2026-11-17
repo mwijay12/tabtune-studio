@@ -34,8 +34,21 @@
       <span>© 2026 {{site.author}}. {{site.madeIn}}.</span>
       <span>Manifest V3 · Chrome {{site.chromeMin}}+ · v{{site.version}}</span>
     </div>
-    <p class="footer__note muted" style="font-size:var(--step--1)">
-      Contact details on this site are placeholders until they are replaced in <span class="mono">site/content/site.json</span>.
+    <p class="footer__contact">
+      <a href="https://wa.me/{{contact.whatsapp}}?text=Salamu%20%E2%80%94%20I%20have%20a%20question%20about%20TabTune%20Studio." rel="noopener">
+        <svg class="ico" aria-hidden="true"><use href="#i-whatsapp"/></svg>
+        {{contact.whatsappDisplay}}
+      </a>
+      <a href="mailto:{{contact.email}}">
+        <svg class="ico" aria-hidden="true"><use href="#i-mail"/></svg>
+        {{contact.email}}
+      </a>
     </p>
+    <p class="footer__note muted" style="font-size:var(--step--1)">{{contact.note}}</p>
+
+    <a class="credit" href="{{site.authorSite}}" target="_blank" rel="noopener">
+      <span class="credit__logo" aria-hidden="true"></span>
+      <span class="credit__text">An <strong>{{site.author}}</strong> build &middot; {{site.authorSiteLabel}}</span>
+    </a>
   </div>
 </footer>
