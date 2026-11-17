@@ -14,7 +14,10 @@
     "ogLine": "Record any tab. Transcribe the lyrics.",
     "ogKicker": "Manifest V3 · Chrome 116+",
     "authorSite": "https://altra.tanzaniareach.com",
-    "authorSiteLabel": "altra.tanzaniareach.com"
+    "authorSiteLabel": "altra.tanzaniareach.com",
+    "authorTagline": "Rooted at home. Engineered for the world.",
+    "authorBlurb": "Websites, apps and business systems for Tanzanian business — Faida POS, CareTrack, and M-Pesa built in.",
+    "authorStart": "https://altra.tanzaniareach.com/contact"
   },
   "pages": {
     "index": {
@@ -244,7 +247,7 @@
     },
     {
       "q": "Is it on the Chrome Web Store yet?",
-      "a": "Not yet — the listing is in review. Until then you can load it unpacked in developer mode, which takes about thirty seconds."
+      "a": "Not yet — the listing is in review. Until then, download the .zip from the Install section: unzip it, drag the folder onto chrome://extensions, done in about thirty seconds. It is the same build Google is looking at."
     },
     {
       "q": "Why can I not just click a button and have it install?",
